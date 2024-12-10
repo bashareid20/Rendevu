@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Görsel Analizi";
+}
+
+<h1>Görsel ve Açıklama ile Yorum Al</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label for="imageFile">Görsel Yükle (PNG/JPEG):</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" required />
+    </div>
+    <br />
+    <div>
+        <label for="prompt">Açıklama (Prompt):</label>
+        <input type="text" id="prompt" name="prompt" placeholder="Görsel hakkında bir açıklama yazın" required />
+    </div>
+    <br />
+    <button type="submit">Yorum Al</button>
+</form>
+
+@if (ViewBag.GeneratedText != null)
+{
+    <h2>Görsel Analizi:</h2>
+    <p>@ViewBag.GeneratedText</p>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="color: red;">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}

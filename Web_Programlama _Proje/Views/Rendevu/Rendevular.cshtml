@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Web_Programlama__Proje.Models.Rendevu>
+
+
+<div class="alert-danger"> @TempData["msj"]</div>
+<h4>Rendevular</h4>
+
+<p>
+    <a asp-action="RendevuAl">Rendevu Al</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.First().MusteriiID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().MusteriAd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().MusteriSoyAd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().MusteriTelefonNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().MusteriMail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().RendevuZaman)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().RendevuOnayDurumu)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusteriiID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusteriAd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusteriSoyAd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusteriTelefonNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusteriMail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RendevuZaman)
+                </td>
+                <td>
+                    @if (!item.RendevuOnayDurumu)
+                    {
+                        <span style="color: orange; font-weight: bold;">Onay Bekliyor</span>
+                    }
+                    else
+                    {
+                        <span style="color: green; font-weight: bold;">Onaylandı</span>
+                    }
+                </td>
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MusteriiID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MusteriiID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MusteriiID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

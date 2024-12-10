@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Image-to-Image Transformation";
+}
+
+<h1>Görüntü Dönüştürme</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label for="imageFile">Görüntü Yükle (PNG):</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/png" required />
+    </div>
+    <div>
+        <label for="prompt">Açıklama (Prompt):</label>
+        <input type="text" id="prompt" name="prompt" required />
+    </div>
+    <button type="submit">Dönüştür</button>
+</form>
+
+@if (ViewBag.ImageUrl != null)
+{
+    <h2>Oluşturulan Görüntü:</h2>
+    <img src="@ViewBag.ImageUrl" alt="Generated Image" />
+}

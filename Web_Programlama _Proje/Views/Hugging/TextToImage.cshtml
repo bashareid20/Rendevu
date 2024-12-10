@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Text to Image";
+}
+
+<h1>Metin ile Görüntü Oluşturma</h1>
+
+<p><strong>Not:</strong> Lütfen bir açıklama girerek görsel oluşturmayı deneyin. Model hazır değilse biraz bekleyip tekrar deneyebilirsiniz.</p>
+
+<form method="post" asp-controller="Hugging" asp-action="TextToImage">
+    <div>
+        <label for="prompt">Açıklama:</label>
+        <input type="text" id="prompt" name="prompt" placeholder="Görsel oluşturmak için bir açıklama girin" required />
+    </div>
+    <button type="submit">Görsel Oluştur</button>
+</form>
+
+@if (ViewBag.ImageUrl != null)
+{
+    <h2>Oluşturulan Görüntü:</h2>
+    <img src="@ViewBag.ImageUrl" alt="Oluşturulan Görüntü" />
+}
