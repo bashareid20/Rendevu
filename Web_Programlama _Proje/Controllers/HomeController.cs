@@ -18,6 +18,10 @@ namespace Web_Programlama__Proje.Controllers
             return View();
         }
 
+        public IActionResult Hakkimizda()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

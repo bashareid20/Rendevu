@@ -23,6 +23,7 @@ namespace Web_Programlama__Proje
             app.UseStaticFiles();
 
             app.UseRouting();
+          
 
             app.UseAuthorization();
 
