@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Controllers
 {
@@ -9,6 +10,7 @@ namespace Web_Programlama__Proje.Controllers
         {
             return View();
         }
+        [Authorize(Roles ="Admin")]
         public IActionResult Rendevular()
         {
             var rendevular = _context.Rendevular.ToList();

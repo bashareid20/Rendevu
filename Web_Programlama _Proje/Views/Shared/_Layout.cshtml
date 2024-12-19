@@ -60,7 +60,7 @@
                         <a asp-controller="OpenAiApi" asp-action="ImageToImage" class="dropdown-item">Ai Image To Imagee</a>
                         <a asp-controller="Hugging" asp-action="TextToImage" class="dropdown-item">Ai Text To Image</a>
                         <a asp-controller="HuggingImageToText" asp-action="ImageToText" class="dropdown-item">Ai Image To Text</a>
-                        <a asp-controller="WorkingHours" asp-action="Index" class="dropdown-item">Working Hours</a>
+                        <a asp-controller="Image" asp-action="TransformImage" class="dropdown-item">TransformImage</a>
                         <a asp-controller="Testimonial" asp-action="Index" class="dropdown-item">Testimonial</a>
                         <a asp-controller="Error" asp-action="Index" class="dropdown-item">404 Page</a>
                     </div>
@@ -81,7 +81,12 @@
                 </div>
                 <a asp-controller="Contact" asp-action="Index" class="nav-item nav-link">Contact</a>
             </div>
-            <a href="#" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
+            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">
+                Giriş Yap<i class="fa fa-arrow-right ms-3"></i>
+            </a>
+
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">Kayıt Ol<i class="fa fa-arrow-right ms-3"></i></a>
+             
         </div>
     </nav>
     <!-- Navbar End -->

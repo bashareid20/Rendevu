@@ -1,96 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 
-public class HuggingImageToTextController : Controller
+namespace Web_Programlama__Proje.Controllers
 {
-    private readonly HttpClient _httpClient;
-    private const string OpenAiApiUrl = "https://api.openai.com/v1/chat/completions"; // OpenAI ChatGPT API URL
-    private const string OpenAiApiKey = ""; // OpenAI API Anahtarınızı buraya ekleyin
-
-    public HuggingImageToTextController(IHttpClientFactory httpClientFactory)
+    public class ImageTImageController : Controller
     {
-        _httpClient = httpClientFactory.CreateClient();
-    }
+        private readonly HttpClient _httpClient;
 
-    [HttpGet]
-    public IActionResult ImageToText()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> ImageToText(string prompt, IFormFile imageFile)
-    {
-        if (imageFile == null || imageFile.Length == 0)
+        public ImageTImageController(IHttpClientFactory httpClientFactory)
         {
-            ModelState.AddModelError("imageFile", "Lütfen geçerli bir fotoğraf yükleyin.");
+            _httpClient = httpClientFactory.CreateClient();
+        }
+
+        [HttpGet]
+        public IActionResult TransformImage()
+        {
             return View();
         }
 
-        if (string.IsNullOrWhiteSpace(prompt))
+        [HttpPost]
+        public async Task<IActionResult> TransformImage(IFormFile inputImage, string prompt)
         {
-            ModelState.AddModelError("prompt", "Lütfen bir açıklama yazın.");
-            return View();
-        }
-
-        try
-        {
-            // Görseli Base64 formatına dönüştür
-            byte[] imageBytes;
-            using (var memoryStream = new MemoryStream())
+            if (inputImage == null || inputImage.Length == 0)
             {
-                await imageFile.CopyToAsync(memoryStream);
-                imageBytes = memoryStream.ToArray();
+                return BadRequest("Lütfen bir görsel yükleyin.");
             }
-            string base64Image = Convert.ToBase64String(imageBytes);
 
-            // OpenAI için prompt oluştur
-            string fullPrompt = $"Kullanıcı aşağıdaki açıklamayı sağladı: \"{prompt}\". Ayrıca bir görsel yükledi. Görselin Base64 formatı aşağıdadır:\n\n{base64Image}\n\n" +
-                                "Bu görsel ve açıklamaya dayanarak,ne göryosan yaz listeln.";
-
-            // OpenAI API için JSON payload oluştur
-            var payload = new
+            if (string.IsNullOrWhiteSpace(prompt))
             {
-                model = "gpt-3.5-turbo-16k", // Model olarak GPT-3.5-Turbo-16k kullanılıyor
-                messages = new[]
+                return BadRequest("Lütfen bir açıklama girin.");
+            }
+
+            string apiKey = ""; // Hugging Face API anahtarınızı buraya ekleyin
+            string apiUrl = "https://api-inference.huggingface.co/models/kandinsky-community/kandinsky-2-2-decoder";
+
+            try
+            {
+                // Görseli byte array'e dönüştür
+                using var memoryStream = new MemoryStream();
+                await inputImage.CopyToAsync(memoryStream);
+                byte[] imageBytes = memoryStream.ToArray();
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+                // Multipart form-data içeriği oluştur
+                var formData = new MultipartFormDataContent
                 {
-                    new { role = "system", content = "You are a hair stylist assistant who provides hair styling and color recommendations based on user inputs and images." },
-                    new { role = "user", content = fullPrompt }
-                },
-                max_tokens = 300, // Yanıt uzunluğu
-                temperature = 0.7
-            };
+                    {
+                        new ByteArrayContent(imageBytes)
+                        {
+                            Headers =
+                            {
+                                ContentType = new MediaTypeHeaderValue("image/png")
+                            }
+                        },
+                        "init_image",
+                        inputImage.FileName
+                    },
+                    { new StringContent(prompt), "prompt" }
+                };
 
-            var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+                // API isteği gönder
+                var response = await _httpClient.PostAsync(apiUrl, formData);
 
-            // Authorization header ekle
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", OpenAiApiKey);
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Hata mesajını okuyup döndür
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return StatusCode((int)response.StatusCode, $"API hatası: {errorMessage}");
+                }
 
-            // OpenAI API'ye isteği gönder
-            var response = await _httpClient.PostAsync(OpenAiApiUrl, jsonContent);
+                // Yanıtı binary olarak al ve Base64 string'e dönüştür
+                var responseBytes = await response.Content.ReadAsByteArrayAsync();
+                string base64Image = Convert.ToBase64String(responseBytes);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError("", $"OpenAI API Hatası: {errorMessage}");
+                // Görseli ViewBag ile döndür
+                ViewBag.ImageUrl = $"data:image/png;base64,{base64Image}";
                 return View();
             }
-
-            // API'den dönen yanıtı JSON olarak işle
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var jsonResponse = JsonDocument.Parse(responseContent);
-            var generatedText = jsonResponse.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
-
-            // Yanıtı ViewBag ile döndür
-            ViewBag.GeneratedText = generatedText;
-            return View();
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError("", $"Bir hata oluştu: {ex.Message}");
-            return View();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Bir hata oluştu: {ex.Message}");
+            }
         }
     }
 }

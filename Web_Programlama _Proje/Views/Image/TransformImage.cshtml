@@ -1,0 +1,15 @@
+﻿<form asp-action="TransformImage" method="post" enctype="multipart/form-data">
+    <label for="prompt">Açıklama:</label>
+    <input type="text" id="prompt" name="prompt" required />
+
+    <label for="inputImage">Başlangıç Görseli Yükleyin:</label>
+    <input type="file" id="inputImage" name="inputImage" accept="image/*" required />
+
+    <button type="submit">Dönüştür</button>
+</form>
+
+@if (ViewBag.ImageUrl != null)
+{
+    <h3>Oluşturulan Görsel:</h3>
+    <img src="@ViewBag.ImageUrl" alt="Generated Image" />
+}
