@@ -136,6 +136,7 @@
     <Folder Include="Templed\css\" />
     <Folder Include="Templed\js\" />
     <Folder Include="Templed\lib\" />
+    <Folder Include="Views\RestApi\" />
   </ItemGroup>
 
   <ItemGroup>

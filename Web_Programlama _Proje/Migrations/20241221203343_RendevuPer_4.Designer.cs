@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_Programlama__Proje.Models;
 
@@ -11,9 +12,10 @@ using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Migrations
 {
     [DbContext(typeof(RendevuContext))]
-    partial class RendevuContextModelSnapshot : ModelSnapshot
+    [Migration("20241221203343_RendevuPer_4")]
+    partial class RendevuPer_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,33 +23,6 @@ namespace Web_Programlama__Proje.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Web_Programlama__Proje.Models.Personel", b =>
-                {
-                    b.Property<int>("PersonelID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonelID"), 1L, 1);
-
-                    b.Property<string>("PersonelAd")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PersonelSoyAd")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PersonelYetenekleri")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PersonelID");
-
-                    b.ToTable("Personel");
-                });
 
             modelBuilder.Entity("Web_Programlama__Proje.Models.Rendevu", b =>
                 {
@@ -75,7 +50,7 @@ namespace Web_Programlama__Proje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonelID")
+                    b.Property<int>("PersonelID")
                         .HasColumnType("int");
 
                     b.Property<bool>("RendevuOnayDurumu")
@@ -86,23 +61,7 @@ namespace Web_Programlama__Proje.Migrations
 
                     b.HasKey("MusteriiID");
 
-                    b.HasIndex("PersonelID");
-
                     b.ToTable("Rendevular");
-                });
-
-            modelBuilder.Entity("Web_Programlama__Proje.Models.Rendevu", b =>
-                {
-                    b.HasOne("Web_Programlama__Proje.Models.Personel", "Personel")
-                        .WithMany("Rendevu")
-                        .HasForeignKey("PersonelID");
-
-                    b.Navigation("Personel");
-                });
-
-            modelBuilder.Entity("Web_Programlama__Proje.Models.Personel", b =>
-                {
-                    b.Navigation("Rendevu");
                 });
 #pragma warning restore 612, 618
         }

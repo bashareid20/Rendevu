@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_Programlama__Proje.Models;
 
@@ -11,9 +12,10 @@ using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Migrations
 {
     [DbContext(typeof(RendevuContext))]
-    partial class RendevuContextModelSnapshot : ModelSnapshot
+    [Migration("20241221202638_RendevuPer_1")]
+    partial class RendevuPer_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +77,7 @@ namespace Web_Programlama__Proje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonelID")
+                    b.Property<int>("PersonelID")
                         .HasColumnType("int");
 
                     b.Property<bool>("RendevuOnayDurumu")
@@ -94,15 +96,17 @@ namespace Web_Programlama__Proje.Migrations
             modelBuilder.Entity("Web_Programlama__Proje.Models.Rendevu", b =>
                 {
                     b.HasOne("Web_Programlama__Proje.Models.Personel", "Personel")
-                        .WithMany("Rendevu")
-                        .HasForeignKey("PersonelID");
+                        .WithMany("Randevular")
+                        .HasForeignKey("PersonelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Personel");
                 });
 
             modelBuilder.Entity("Web_Programlama__Proje.Models.Personel", b =>
                 {
-                    b.Navigation("Rendevu");
+                    b.Navigation("Randevular");
                 });
 #pragma warning restore 612, 618
         }
