@@ -1,9 +1,11 @@
 ﻿@model Web_Programlama__Proje.Models.Rendevu
 
 @{
-    ViewBag.Title = "Randevu Al"; // Sayfa başlığı
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout dosyasını kullanma
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="alert-danger">@TempData["msj"]</div>
 
 <!-- Sayfa Başlığı -->
@@ -28,7 +30,6 @@
                     <h4 class="text-primary text-uppercase mb-4">Randevu Formu</h4>
                     <form asp-action="RendevuKaydet">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
 
                         <div class="form-group mb-3">
                             <label asp-for="MusteriAd" class="form-label text-white"></label>
@@ -55,6 +56,38 @@
                             <input asp-for="RendevuZaman" type="datetime-local" class="form-control bg-transparent text-white" />
                             <span asp-validation-for="RendevuZaman" class="text-danger"></span>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="PersonelID" class="form-label text-white">Personel Seçimi</label>
+                            <select asp-for="PersonelID"
+                                    class="form-control bg-dark text-light border-danger"
+                                    asp-items="ViewBag.PersonelListesi">
+                                <option value="" disabled selected>Personel Seçin</option>
+                            </select>
+                            <span asp-validation-for="PersonelID" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hizmetler Seçimi -->
+                        <div class="form-group mb-3">
+                            <label>Hizmetler</label>
+                            <div id="hizmetListesi">
+                                <div class="d-flex mb-2">
+                                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                                        <option value="">Hizmet Seç</option>
+                                        @foreach (var hizmet in hizmetler)
+                                        {
+                                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti">@hizmet.HizmetAd</option>
+                                        }
+                                    </select>
+                                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Toplam Fiyat -->
+                        <div class="form-group mb-3">
+                            <label for="ToplamFiyat">Toplam Fiyat:</label>
+                            <input type="text" id="toplamFiyat" class="form-control bg-transparent text-white" value="0" readonly />
+                        </div>
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary w-100 py-2">Randevu Al</button>
@@ -67,8 +100,44 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        let hizmetIndex = 1;
 
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti">@hizmet.HizmetAd</option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = select.options[select.selectedIndex]?.getAttribute("data-fiyat");
+                if (fiyat) toplamFiyat += parseFloat(fiyat);
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+    </script>
+}

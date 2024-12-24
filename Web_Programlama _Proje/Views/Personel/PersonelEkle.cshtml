@@ -1,0 +1,35 @@
+﻿@model Web_Programlama__Proje.Models.Personel
+
+<h3>Personel Ekle</h3>
+
+<form asp-action="PersonelEkle" method="post">
+    <div class="form-group">
+        <label asp-for="PersonelAd" class="control-label">Personel Adı</label>
+        <input asp-for="PersonelAd" class="form-control" />
+        <span asp-validation-for="PersonelAd" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PersonelSoyAd" class="control-label">Personel Soyadı</label>
+        <input asp-for="PersonelSoyAd" class="form-control" />
+        <span asp-validation-for="PersonelSoyAd" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PersonelYetenekleri" class="control-label">Personel Yetenekleri</label>
+        <textarea asp-for="PersonelYetenekleri" class="form-control"></textarea>
+        <span asp-validation-for="PersonelYetenekleri" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Hizmetler</label>
+        <select name="hizmetler" multiple class="form-control">
+            @foreach (var hizmet in ViewBag.HizmetListesi)
+            {
+                <option value="@hizmet.Value">@hizmet.Text</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>

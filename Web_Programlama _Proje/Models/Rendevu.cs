@@ -18,7 +18,7 @@ namespace Web_Programlama__Proje.Models
         [Required(ErrorMessage = "Lütfen soy adınızı giriniz")]
         [StringLength(50)]
         public string MusteriSoyAd { get; set; }
-
+        [Required(ErrorMessage ="Lütfen numaranızı giriniz")]
         [Display(Name = "Telefon Numarası")]
         [RegularExpression(@"^0\d{3}\d{3}\d{2}\d{2}$", ErrorMessage = "Lütfen '05448980922' formatında bir telefon numarası giriniz.")]
         public string MusteriTelefonNo { get; set; }
@@ -37,7 +37,10 @@ namespace Web_Programlama__Proje.Models
 
         // Foreign Key
         [ForeignKey("Personel")]
-        public int? PersonelID { get; set; }
+        [Required(ErrorMessage = "Lütfen Personel Seçiniz")]
+        public int PersonelID { get; set; }
+        [NotMapped]
+        public List<int> Hizmetler { get; set; } = new List<int>(); // Hizmet ID'leri
 
         public Personel? Personel { get; set; }
     }

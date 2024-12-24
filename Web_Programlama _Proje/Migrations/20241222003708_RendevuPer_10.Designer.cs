@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_Programlama__Proje.Models;
 
@@ -11,9 +12,10 @@ using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Migrations
 {
     [DbContext(typeof(RendevuContext))]
-    partial class RendevuContextModelSnapshot : ModelSnapshot
+    [Migration("20241222003708_RendevuPer_10")]
+    partial class RendevuPer_10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,33 +23,6 @@ namespace Web_Programlama__Proje.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Web_Programlama__Proje.Models.Hizmetler", b =>
-                {
-                    b.Property<int>("HizmetID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HizmetID"), 1L, 1);
-
-                    b.Property<string>("HizmetAd")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("HizmetResim")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HizmetSuresi")
-                        .HasColumnType("int");
-
-                    b.Property<double>("HizmetUcreti")
-                        .HasColumnType("float");
-
-                    b.HasKey("HizmetID");
-
-                    b.ToTable("Hizmetler");
-                });
 
             modelBuilder.Entity("Web_Programlama__Proje.Models.Personel", b =>
                 {
@@ -74,29 +49,6 @@ namespace Web_Programlama__Proje.Migrations
                     b.HasKey("PersonelID");
 
                     b.ToTable("Personaller");
-                });
-
-            modelBuilder.Entity("Web_Programlama__Proje.Models.PersonelHizmet", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int>("HizmetID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonelID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("HizmetID");
-
-                    b.HasIndex("PersonelID");
-
-                    b.ToTable("PersonelHizmetler");
                 });
 
             modelBuilder.Entity("Web_Programlama__Proje.Models.Rendevu", b =>
@@ -141,25 +93,6 @@ namespace Web_Programlama__Proje.Migrations
                     b.ToTable("Rendevular");
                 });
 
-            modelBuilder.Entity("Web_Programlama__Proje.Models.PersonelHizmet", b =>
-                {
-                    b.HasOne("Web_Programlama__Proje.Models.Hizmetler", "Hizmetler")
-                        .WithMany("PersonelHizmetler")
-                        .HasForeignKey("HizmetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Web_Programlama__Proje.Models.Personel", "Personel")
-                        .WithMany("PersonelHizmetler")
-                        .HasForeignKey("PersonelID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hizmetler");
-
-                    b.Navigation("Personel");
-                });
-
             modelBuilder.Entity("Web_Programlama__Proje.Models.Rendevu", b =>
                 {
                     b.HasOne("Web_Programlama__Proje.Models.Personel", "Personel")
@@ -171,15 +104,8 @@ namespace Web_Programlama__Proje.Migrations
                     b.Navigation("Personel");
                 });
 
-            modelBuilder.Entity("Web_Programlama__Proje.Models.Hizmetler", b =>
-                {
-                    b.Navigation("PersonelHizmetler");
-                });
-
             modelBuilder.Entity("Web_Programlama__Proje.Models.Personel", b =>
                 {
-                    b.Navigation("PersonelHizmetler");
-
                     b.Navigation("Rendevu");
                 });
 #pragma warning restore 612, 618

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Web_Programlama__Proje.Models.Hizmetler>
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5">
+    <div class="container text-center py-5">
+        <h1 class="display-3 text-white text-uppercase mb-3">Hizmetlerimiz</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                <li class="breadcrumb-item text-primary active" aria-current="page">Hizmetler</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Services Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5" style="max-width: 600px;">
+            <p class="d-inline-block bg-secondary text-primary py-1 px-4">Hizmetlerimiz</p>
+            <h1 class="text-uppercase">Sunduğumuz Hizmetler</h1>
+        </div>
+        <div class="row g-4">
+           @foreach (var hizmet in Model)
+{
+    <div class="col-lg-4 col-md-6">
+        <div class="service-item position-relative overflow-hidden bg-secondary d-flex h-100 p-5 ps-0">
+            <!-- Görsel -->
+            <div class="bg-dark d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <img src="@Url.Content(hizmet.HizmetResim)" alt="@hizmet.HizmetAd" class="img-fluid" style="max-height: 50px;">
+
+            </div>
+            <!-- Hizmet Bilgileri -->
+            <div class="ps-4">
+                <h3 class="text-uppercase mb-3">@hizmet.HizmetAd</h3>
+                <p>@hizmet.HizmetSuresi dakika - @hizmet.HizmetUcreti TL</p>
+            </div>
+        </div>
+    </div>
+}
+
+        </div>
+    </div>
+</div>
+<!-- Services End -->

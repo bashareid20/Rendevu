@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_Programlama__Proje.Models;
 
@@ -11,9 +12,10 @@ using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Migrations
 {
     [DbContext(typeof(RendevuContext))]
-    partial class RendevuContextModelSnapshot : ModelSnapshot
+    [Migration("20241222184734_PersoneHizmet_1")]
+    partial class PersoneHizmet_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,11 +37,9 @@ namespace Web_Programlama__Proje.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("HizmetResim")
+                    b.Property<string>("HizmetSuresi")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HizmetSuresi")
-                        .HasColumnType("int");
 
                     b.Property<double>("HizmetUcreti")
                         .HasColumnType("float");
@@ -143,7 +143,7 @@ namespace Web_Programlama__Proje.Migrations
 
             modelBuilder.Entity("Web_Programlama__Proje.Models.PersonelHizmet", b =>
                 {
-                    b.HasOne("Web_Programlama__Proje.Models.Hizmetler", "Hizmetler")
+                    b.HasOne("Web_Programlama__Proje.Models.Hizmetler", "Hizmet")
                         .WithMany("PersonelHizmetler")
                         .HasForeignKey("HizmetID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -155,7 +155,7 @@ namespace Web_Programlama__Proje.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Hizmetler");
+                    b.Navigation("Hizmet");
 
                     b.Navigation("Personel");
                 });

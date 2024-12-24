@@ -6,6 +6,7 @@ namespace Web_Programlama__Proje.Models
     {
         [Key]
         [Display(Name = "Personel ID")]
+        [Required(ErrorMessage ="Lütfen Personel Seçiniz")]
         public int PersonelID { get; set; }
         [Required(ErrorMessage = "Lütefen Personel Adını Giriniz")]
         [Display(Name = "Personel Adı")]
@@ -19,5 +20,6 @@ namespace Web_Programlama__Proje.Models
         [Display(Name = "Personel Yetenekleri")]
         public string PersonelYetenekleri { get; set; }
         public ICollection<Rendevu>? Rendevu { get; set; }
+        public ICollection<PersonelHizmet>? PersonelHizmetler { get; set; }
     }
 }
