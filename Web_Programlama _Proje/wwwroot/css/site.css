@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+.date-picker-cell.disabled {
+    background-color: #d3d3d3;
+    pointer-events: none;
+    opacity: 0.5;
+}

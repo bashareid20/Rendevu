@@ -70,17 +70,11 @@
 
 
                 <td>
-                    <a asp-action="RendevuDuzenle" asp-route-id="@item.MusteriiID">RendevuDuzenle</a> |
-                    <a asp-action="RendavuDetay" asp-route-id="@item.MusteriiID">Detay</a> |
+                    <a asp-action="Edit" asp-route-id="@item.MusteriiID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MusteriiID">Details</a> |
                     <a asp-action="RendavuSil" asp-route-id="@item.MusteriiID">Sil</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

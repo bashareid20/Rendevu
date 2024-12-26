@@ -1,0 +1,52 @@
+﻿@model Web_Programlama__Proje.Models.Rendevu
+
+<div>
+    <h4>Randevu Detayları</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Müşteri Adı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MusteriAd)</dd>
+
+        <dt class="col-sm-3">Müşteri Soyadı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MusteriSoyAd)</dd>
+
+        <dt class="col-sm-3">Personel Adı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Personel.PersonelAd)</dd>
+
+        <dt class="col-sm-3">Personel Soyadı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Personel.PersonelSoyAd)</dd>
+
+        <dt class="col-sm-3">Toplam Hizmet Süresi (dk)</dt>
+        <dd class="col-sm-9">@ViewBag.ToplamHizmetSuresi</dd>
+
+        <dt class="col-sm-3">Toplam Hizmet Ücreti</dt>
+        <dd class="col-sm-9">@ViewBag.ToplamHizmetUcreti</dd>
+    </dl>
+
+    <h5>Hizmet Detayları</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Hizmet Adı</th>
+                <th>Hizmet Süresi (dk)</th>
+                <th>Hizmet Ücreti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hizmet in Model.Personel.PersonelHizmetler.Select(ph => ph.Hizmetler))
+            {
+                <tr>
+                    <td>@hizmet.HizmetAd</td>
+                    <td>@hizmet.HizmetSuresi</td>
+                    <td>@hizmet.HizmetUcreti</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

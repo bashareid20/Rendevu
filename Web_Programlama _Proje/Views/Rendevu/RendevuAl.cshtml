@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="RendevuZaman" class="form-label text-white"></label>
-                            <input asp-for="RendevuZaman" type="datetime-local" class="form-control bg-transparent text-white" />
+                            <input asp-for="RendevuZaman" type="datetime-local" class="form-control bg-transparent text-white" id="randevuTarihSaat" />
                             <span asp-validation-for="RendevuZaman" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
@@ -100,7 +100,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         let hizmetIndex = 1;
 
@@ -114,7 +116,7 @@
                     <option value="">Hizmet Seç</option>
         @foreach (var hizmet in hizmetler)
         {
-                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti">@hizmet.HizmetAd</option>
+                                <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti">@hizmet.HizmetAd</option>
         }
                 </select>
                 <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
@@ -139,5 +141,41 @@
 
             document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
         }
+
+        document.getElementById("randevuTarihSaat").addEventListener("input", function () {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Disable past dates and Sundays
+            if (selectedDate < today || selectedDate.getDay() === 0) {
+                alert("Bu tarih seçilemez! Lütfen geçerli bir tarih seçin.");
+                this.value = "";
+            }
+        });
+
+        document.getElementById("randevuTarihSaat").addEventListener("change", async function () {
+            const personelID = document.querySelector("[asp-for='PersonelID']").value;
+            const selectedDateTime = new Date(this.value);
+            const response = await fetch(`/api/Rendevu/CheckAvailability?personelID=${personelID}&date=${selectedDateTime.toISOString()}`);
+            const result = await response.json();
+
+            if (!result.isAvailable) {
+                alert("Seçtiğiniz tarihte personel müsait değil.");
+                this.value = "";
+            }
+        });
+
+        document.getElementById("randevuTarihSaat").addEventListener("mouseover", function () {
+            const today = new Date();
+            const calendarCells = document.querySelectorAll(".date-picker-cell");
+            calendarCells.forEach(cell => {
+                const cellDate = new Date(cell.getAttribute("data-date"));
+                if (cellDate < today || cellDate.getDay() === 0) {
+                    cell.style.backgroundColor = "#d3d3d3";
+                    cell.style.pointerEvents = "none";
+                }
+            });
+        });
     </script>
 }

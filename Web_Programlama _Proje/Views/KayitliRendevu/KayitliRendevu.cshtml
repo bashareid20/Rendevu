@@ -1,0 +1,41 @@
+﻿@model Web_Programlama__Proje.Models.Rendevu
+
+<div class="alert-danger">@TempData["msj"]</div>
+
+<h2>Randevu Al</h2>
+<form asp-action="RandevuAl" method="post">
+    <div class="form-group">
+        <label asp-for="MusteriAd"></label>
+        <input asp-for="MusteriAd" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="MusteriSoyAd"></label>
+        <input asp-for="MusteriSoyAd" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="MusteriMail"></label>
+        <input asp-for="MusteriMail" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="MusteriTelefonNo"></label>
+        <input asp-for="MusteriTelefonNo" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="RendevuZaman"></label>
+        <input asp-for="RendevuZaman" type="datetime-local" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="PersonelID">Personel</label>
+        <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="Hizmetler">Hizmetler</label>
+        <select asp-for="Hizmetler" asp-items="ViewBag.HizmetListesi" class="form-control" multiple></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Randevu Al</button>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
