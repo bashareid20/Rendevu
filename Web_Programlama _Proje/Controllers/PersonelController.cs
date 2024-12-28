@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Web_Programlama__Proje.Models;
 
 namespace Web_Programlama__Proje.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class PersonelController : Controller
     {
         RendevuContext _context=new RendevuContext();    

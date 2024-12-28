@@ -1,86 +1,61 @@
 ﻿@model IEnumerable<Web_Programlama__Proje.Models.Rendevu>
 
+<div class="container mt-4">
+    <div class="alert-danger" > @TempData["msj"]</div>
+    <h2 class="text-center mb-4 text-primary">Randevular</h2>
 
-<div class="alert-danger"> @TempData["msj"]</div>
-<h4>Rendevular</h4>
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-success" asp-action="RendevuAl">+ Randevu Al</a>
+    </div>
 
-<p>
-    <a asp-action="RendevuAl">Rendevu Al</a>
-</p>
-<table class="table table-responsive">
-    <thead>
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.First().MusteriiID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().MusteriAd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().MusteriSoyAd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().MusteriTelefonNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().MusteriMail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().RendevuZaman)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().RendevuOnayDurumu)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MusteriiID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MusteriAd)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MusteriSoyAd)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MusteriTelefonNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MusteriMail)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RendevuZaman)
-                </td>
-                <td>
-                    @if (!item.RendevuOnayDurumu)
-                    {
-                        <span style="color: orange; font-weight: bold;">Onay Bekliyor</span>
-                    }
-                    else
-                    {
-                        <span style="color: green; font-weight: bold;">Onaylandı</span>
-                    }
-                </td>
-
-
-                <td>
-                    <a asp-action="RendevuDuzenle" asp-route-id="@item.MusteriiID">RendevuDuzenle</a> |
-                    <a asp-action="RendavuDetay" asp-route-id="@item.MusteriiID">Detay</a> |
-                    <a asp-action="RendavuSil" asp-route-id="@item.MusteriiID">Sil</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    <div class="table-responsive shadow-lg rounded">
+        <table class="table table-hover table-striped table-bordered">
+            <thead class="thead-dark bg-primary text-white">
+                <tr class="text-center">
+                    <th>@Html.DisplayNameFor(model => model.First().MusteriiID)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().MusteriAd)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().MusteriSoyAd)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().MusteriTelefonNo)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().MusteriMail)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().RendevuZaman)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().RendevuOnayDurumu)</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center align-middle">
+                        <td>@Html.DisplayFor(modelItem => item.MusteriiID)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MusteriAd)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MusteriSoyAd)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MusteriTelefonNo)</td>
+                        <td class="text-danger">@Html.DisplayFor(modelItem => item.MusteriMail)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RendevuZaman)</td>
+                        <td>
+                            @if (!item.RendevuOnayDurumu)
+                            {
+                                <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Onaylandı</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary mx-1" asp-action="RendevuDuzenle" asp-route-id="@item.MusteriiID">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+                            <a class="btn btn-sm btn-outline-info mx-1" asp-action="RendavuDetay" asp-route-id="@item.MusteriiID">
+                                <i class="fas fa-info-circle"></i> Detay
+                            </a>
+                            <a class="btn btn-sm btn-outline-danger mx-1" asp-action="RendavuSil" asp-route-id="@item.MusteriiID">
+                                <i class="fas fa-trash-alt"></i> Sil
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

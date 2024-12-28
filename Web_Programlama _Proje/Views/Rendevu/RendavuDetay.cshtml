@@ -1,46 +1,46 @@
 ﻿@model Web_Programlama__Proje.Models.Rendevu
 
-<h4>Randevu Düzenle</h4>
-<hr />
+<div>
+    <h4>Randevu Detayları</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Müşteri Adı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MusteriAd)</dd>
 
-<form asp-action="RendevuDuzenle" method="post">
-    <input type="hidden" asp-for="MusteriiID" />
+        <dt class="col-sm-3">Müşteri Soyadı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MusteriSoyAd)</dd>
 
-    <div class="form-group">
-        <label asp-for="MusteriAd" class="control-label"></label>
-        <input asp-for="MusteriAd" class="form-control" />
-        <span asp-validation-for="MusteriAd" class="text-danger"></span>
-    </div>
+        <dt class="col-sm-3">Personel Adı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Personel.PersonelAd)</dd>
 
-    <div class="form-group">
-        <label asp-for="MusteriSoyAd" class="control-label"></label>
-        <input asp-for="MusteriSoyAd" class="form-control" />
-        <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
-    </div>
+        <dt class="col-sm-3">Personel Soyadı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Personel.PersonelSoyAd)</dd>
 
-    <div class="form-group">
-        <label asp-for="RendevuZaman" class="control-label"></label>
-        <input asp-for="RendevuZaman" type="datetime-local" class="form-control" />
-        <span asp-validation-for="RendevuZaman" class="text-danger"></span>
-    </div>
+        <dt class="col-sm-3">Toplam Hizmet Süresi (dk)</dt>
+        <dd class="col-sm-9">@ViewBag.ToplamHizmetSuresi</dd>
 
-    <div class="form-group">
-        <label for="PersonelID" class="control-label">Personel</label>
-        <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control"></select>
-        <span asp-validation-for="PersonelID" class="text-danger"></span>
-    </div>
+        <dt class="col-sm-3">Toplam Hizmet Ücreti</dt>
+        <dd class="col-sm-9">@ViewBag.ToplamHizmetUcreti</dd>
+    </dl>
 
-    <div class="form-group">
-        <label for="selectedHizmetler" class="control-label">Hizmetler</label>
-        <select asp-for="selectedHizmetler" asp-items="ViewBag.HizmetListesi" class="form-control" multiple></select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Güncelle</button>
-    <a asp-action="Rendevular" class="btn btn-secondary">İptal</a>
-</form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    <h5>Hizmet Detayları</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Hizmet Adı</th>
+                <th>Hizmet Süresi (dk)</th>
+                <th>Hizmet Ücreti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hizmet in Model.Personel.PersonelHizmetler.Select(ph => ph.Hizmetler))
+            {
+                <tr>
+                    <td>@hizmet.HizmetAd</td>
+                    <td>@hizmet.HizmetSuresi</td>
+                    <td>@hizmet.HizmetUcreti</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

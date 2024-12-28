@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -10,7 +11,7 @@ public class OpenAiApiController: Controller
     {
         _httpClient = httpClientFactory.CreateClient();
     }
-
+    [Authorize]
     [HttpGet]
     public IActionResult ImageToImage()
     {

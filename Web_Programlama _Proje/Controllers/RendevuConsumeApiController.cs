@@ -7,7 +7,7 @@ namespace Web_Programlama__Proje.Controllers
 {
     public class RendevuConsumeApiController : Controller
     {
-        //RendevuContext _context = new RendevuContext();
+        RendevuContext _context = new RendevuContext();
 
         public async Task<IActionResult> RendevuGetir()
         {

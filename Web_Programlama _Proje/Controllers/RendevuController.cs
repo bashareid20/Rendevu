@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Controllers
 {
-    [Authorize]
+
     public class RendevuController : Controller
     {
        
@@ -329,7 +329,7 @@ public IActionResult RendevuDuzenle(int? id)
             TempData["msj"] = "Randevu ve hizmetler başarıyla güncellendi.";
             return RedirectToAction("Rendevular");
         }
-
+      
         public IActionResult RendavuSil(int? id) 
         {
             if (id is null)
@@ -351,7 +351,7 @@ public IActionResult RendevuDuzenle(int? id)
             return RedirectToAction("Rendevular");
 
         }
-
+       
         public IActionResult RendevuAl()
         {
             var personeller = _context.Personaller
