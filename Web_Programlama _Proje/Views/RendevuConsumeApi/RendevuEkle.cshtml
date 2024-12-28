@@ -1,0 +1,48 @@
+﻿@model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Ekle";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Yeni Randevu Ekle</h2>
+    <form asp-action="RendevuEkle" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel ID</label>
+            <input asp-for="PersonelID" class="form-control" />
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input asp-for="RendevuZaman" type="datetime-local" class="form-control" />
+            <span asp-validation-for="RendevuZaman" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Ekle</button>
+    </form>
+</div>

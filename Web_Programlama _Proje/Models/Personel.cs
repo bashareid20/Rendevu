@@ -19,7 +19,9 @@ namespace Web_Programlama__Proje.Models
         [Required(ErrorMessage = "Lütefen Personel yetenekleri Giriniz")]
         [Display(Name = "Personel Yetenekleri")]
         public string PersonelYetenekleri { get; set; }
+     
         public ICollection<Rendevu>? Rendevu { get; set; }
+        public ICollection<PersonelCalismaSaati>? PersonelCalismaSaati { get; set; }
         public ICollection<PersonelHizmet>? PersonelHizmetler { get; set; }
     }
 }

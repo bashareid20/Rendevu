@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_Programlama__Proje.Models;
 
@@ -11,9 +12,10 @@ using Web_Programlama__Proje.Models;
 namespace Web_Programlama__Proje.Migrations
 {
     [DbContext(typeof(RendevuContext))]
-    partial class RendevuContextModelSnapshot : ModelSnapshot
+    [Migration("20241228184317_Isdelete")]
+    partial class Isdelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,9 +155,6 @@ namespace Web_Programlama__Proje.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonelID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RendevuDurumu")
                         .HasColumnType("int");
 
                     b.Property<bool>("RendevuOnayDurumu")

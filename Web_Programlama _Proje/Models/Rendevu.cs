@@ -34,6 +34,10 @@ namespace Web_Programlama__Proje.Models
 
         [Display(Name = "Rendevu Onay Durumu")]
         public Boolean RendevuOnayDurumu { get; set; }
+        [Display(Name = "Randevu Onay Durumu")]
+        public int? RendevuDurumu { get; set; } // null: Bekliyor, 1: Onaylandı, 0: Reddedildi
+
+
 
         // Foreign Key
         [ForeignKey("Personel")]
@@ -41,7 +45,7 @@ namespace Web_Programlama__Proje.Models
         public int PersonelID { get; set; }
         [NotMapped]
         public List<int> Hizmetler { get; set; } = new List<int>(); // Hizmet ID'leri
-
+        public ICollection<RendevuHizmet>? RendevuHizmetler { get; set; }
         public Personel? Personel { get; set; }
     }
 }

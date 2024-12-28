@@ -1,0 +1,34 @@
+﻿@model Web_Programlama__Proje.Models.Hizmetler
+
+@{
+    ViewBag.Title = "Hizmet Düzenle";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Hizmet Düzenle</h2>
+    <form asp-action="HizmetDuzenle" method="post">
+        <input asp-for="HizmetID" type="hidden" />
+        <div class="form-group mb-3">
+            <label asp-for="HizmetAd" class="form-label">Hizmet Adı</label>
+            <input asp-for="HizmetAd" class="form-control" />
+            <span asp-validation-for="HizmetAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="HizmetUcreti" class="form-label">Hizmet Ücreti</label>
+            <input asp-for="HizmetUcreti" class="form-control" type="number" />
+            <span asp-validation-for="HizmetUcreti" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="HizmetSuresi" class="form-label">Hizmet Süresi (dk)</label>
+            <input asp-for="HizmetSuresi" class="form-control" type="number" />
+            <span asp-validation-for="HizmetSuresi" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="HizmetResim" class="form-label">Hizmet Resmi</label>
+            <input asp-for="HizmetResim" class="form-control" type="text" />
+            <span asp-validation-for="HizmetResim" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Güncelle</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

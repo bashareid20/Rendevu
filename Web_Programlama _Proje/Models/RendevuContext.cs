@@ -8,6 +8,8 @@ namespace Web_Programlama__Proje.Models
         public DbSet<Personel> Personaller { get; set; }
         public DbSet<Hizmetler> Hizmetler { get; set; }
         public DbSet<PersonelHizmet> PersonelHizmetler { get; set; }
+        public DbSet<PersonelCalismaSaati> PersonelCalismaSaati { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +33,19 @@ namespace Web_Programlama__Proje.Models
                 .HasOne(ph => ph.Hizmetler)
                 .WithMany(h => h.PersonelHizmetler)
                 .HasForeignKey(ph => ph.HizmetID);
+            // Randevu-Hizmet Many-to-Many ilişki tanımı
+            modelBuilder.Entity<RendevuHizmet>()
+                .HasKey(rh => new { rh.RendevuID, rh.HizmetID });
+
+            modelBuilder.Entity<RendevuHizmet>()
+                .HasOne(rh => rh.Rendevu)
+                .WithMany(r => r.RendevuHizmetler)
+                .HasForeignKey(rh => rh.RendevuID);
+
+            modelBuilder.Entity<RendevuHizmet>()
+                .HasOne(rh => rh.Hizmetler)
+                .WithMany(h => h.RendevuHizmetler)
+                .HasForeignKey(rh => rh.HizmetID);
         }
     }
 }

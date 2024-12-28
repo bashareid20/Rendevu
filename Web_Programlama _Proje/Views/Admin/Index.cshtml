@@ -1,0 +1,64 @@
+﻿@model List<Web_Programlama__Proje.Models.Rendevu>
+
+@{
+    ViewBag.Title = "Admin Paneli";
+}
+
+<h2>Admin Paneli</h2>
+
+<p>Bekleyen Randevu Sayısı: @ViewBag.BekleyenRandevuSayisi</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Müşteri Adı</th>
+            <th>Müşteri Soyadı</th>
+            <th>Telefon</th>
+            <th>Mail</th>
+            <th>Randevu Tarihi</th>
+            <th>Personel</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var randevu in Model)
+        {
+            <tr>
+                <td>@randevu.MusteriAd</td>
+                <td>@randevu.MusteriSoyAd</td>
+                <td>@randevu.MusteriTelefonNo</td>
+                <td>@randevu.MusteriMail</td>
+                <td>@randevu.RendevuZaman.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@randevu.Personel?.PersonelAd @randevu.Personel?.PersonelSoyAd</td>
+                <td>
+                    @if (randevu.RendevuDurumu == null)
+                    {
+                        <span class="text-warning">Bekliyor</span>
+                    }
+                    else if (randevu.RendevuDurumu == 1)
+                    {
+                        <span class="text-success">Onaylandı</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Reddedildi</span>
+                    }
+                </td>
+                <td>
+                    @if (randevu.RendevuDurumu == null)
+                    {
+                        <form asp-action="RandevuOnayla" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@randevu.MusteriiID" />
+                            <button type="submit" class="btn btn-success">Onayla</button>
+                        </form>
+                        <form asp-action="RandevuReddet" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@randevu.MusteriiID" />
+                            <button type="submit" class="btn btn-danger">Reddet</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

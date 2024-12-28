@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Web_Programlama__Proje.Models.Personel>
+
+<div class="container">
+    <h2>Personel Listesi</h2>
+    <a asp-action="PersonelEkle" class="btn btn-primary mb-3">Yeni Personel Ekle</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Adı</th>
+                <th>Soyadı</th>
+                <th>Hizmetler</th>
+                <th>Çalışma Saatleri</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var personel in Model)
+            {
+                <tr>
+                    <td>@personel.PersonelAd</td>
+                    <td>@personel.PersonelSoyAd</td>
+                    <td>
+                        @foreach (var hizmet in personel.PersonelHizmetler)
+                        {
+                            <span>@hizmet.Hizmetler.HizmetAd</span>
+
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        @foreach (var saat in personel.PersonelCalismaSaati)
+                        {
+                            <span>@saat.CalismaSaati</span>
+
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="PersonelDetay" asp-route-id="@personel.PersonelID" class="btn btn-info">Detaylar</a>
+                        <a asp-action="PersonelSil" asp-route-id="@personel.PersonelID" class="btn btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

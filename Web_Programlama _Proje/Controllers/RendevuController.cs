@@ -23,37 +23,7 @@ namespace Web_Programlama__Proje.Controllers
             return View(rendevular);
         }
 
-        //public IActionResult RendevuKaydet(Rendevu rendevu)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        foreach (var hizmetId in rendevu.Hizmetler)
-        //        {
-        //            var hizmet = _context.Hizmetler.Find(hizmetId);
-        //            // Seçilen hizmetlerle ilgili işlemleri yapabilirsiniz
-        //        }
-
-        //        // Aynı personel ve saat için randevu kontrolü
-        //        bool cakisiyorMu = _context.Rendevular
-        //            .Any(r => r.PersonelID == rendevu.PersonelID && r.RendevuZaman == rendevu.RendevuZaman);
-
-        //        if (cakisiyorMu)
-        //        {
-        //            // Çakışma durumunda kullanıcıya mesaj döndürülür
-        //            TempData["msj"] = "Seçtiğiniz personel için aynı saat diliminde zaten bir randevu mevcut!";
-        //            return RedirectToAction("RendevuAl");
-        //        }
-
-        //        // Eğer çakışma yoksa randevu kaydedilir
-        //        _context.Rendevular.Add(rendevu);
-        //        _context.SaveChanges();
-        //        TempData["msj"] = $"{rendevu.MusteriAd} için randevu başarıyla kaydedildi.";
-        //        return RedirectToAction("Rendevular");
-        //    }
-
-        //    TempData["msj"] = "Lütfen bilgilerin doğruluğundan emin olun!";
-        //    return RedirectToAction("RendevuAl");
-        //}
+      
         private int GetToplamHizmetSuresi(int musteriiId)
 {
     // İlgili müşteri randevusuna ait hizmet sürelerini al
@@ -69,10 +39,24 @@ namespace Web_Programlama__Proje.Controllers
         }
 
 
+
         //public IActionResult RendevuKaydet(Rendevu rendevu)
         //{
         //    if (ModelState.IsValid)
         //    {
+        //        // Müşteri var mı kontrol et (bugün veya gelecekte randevusu var mı?)
+        //        var mevcutRandevular = _context.Rendevular
+        //            .Where(m => m.MusteriMail == rendevu.MusteriMail || m.MusteriTelefonNo == rendevu.MusteriTelefonNo)
+        //            .ToList();
+
+        //        if (mevcutRandevular.Any(r => r.RendevuZaman.Date >= DateTime.Now.Date))
+        //        {
+        //            // Eğer müşteri bugün veya daha sonraki bir tarihte randevu almışsa, uyarı ver
+        //            TempData["msj_sorgula"] = "Bu e-posta veya telefon numarasıyla bugüne veya geleceğe ait bir randevu zaten alınmış!";
+        //            return RedirectToAction("RendevuSorgula"); // Uygun sayfaya yönlendirme
+        //        }
+
+
         //        // Hizmetlerin toplam süresini hesapla
         //        int toplamHizmetSuresi = 0;
         //        foreach (var hizmetId in rendevu.Hizmetler)
@@ -89,26 +73,17 @@ namespace Web_Programlama__Proje.Controllers
         //        DateTime randevuBitis = randevuBaslangic.AddMinutes(toplamHizmetSuresi);
 
         //        // Aynı personel ve zaman aralığında başka randevu var mı kontrol et
-        //        // Veritabanından ilgili randevuları ve personelleri liste olarak alın
         //        var randevular = _context.Rendevular
         //            .Where(r => r.PersonelID == rendevu.PersonelID)
-        //            .ToList(); // Verileri belleğe al
+        //            .ToList();
 
         //        bool cakisiyorMu = randevular.Any(r =>
         //        {
-        //            // Mevcut randevular için hizmet sürelerini hesapla
         //            int mevcutRandevuToplamSuresi = GetToplamHizmetSuresi(r.MusteriiID);
-
-        //            // Randevu başlangıç ve bitiş zamanlarını hesapla
         //            DateTime mevcutRandevuBaslangic = r.RendevuZaman;
         //            DateTime mevcutRandevuBitis = mevcutRandevuBaslangic.AddMinutes(mevcutRandevuToplamSuresi);
 
-        //            // Yeni randevu başlangıç ve bitiş zamanları
-        //            DateTime yeniRandevuBaslangic = rendevu.RendevuZaman;
-        //            DateTime yeniRandevuBitis = yeniRandevuBaslangic.AddMinutes(toplamHizmetSuresi);
-
-        //            // Çakışma kontrolü
-        //            return (mevcutRandevuBaslangic < yeniRandevuBitis && mevcutRandevuBitis > yeniRandevuBaslangic);
+        //            return (mevcutRandevuBaslangic < randevuBitis && mevcutRandevuBitis > randevuBaslangic);
         //        });
 
         //        if (cakisiyorMu)
@@ -117,8 +92,7 @@ namespace Web_Programlama__Proje.Controllers
         //            return RedirectToAction("RendevuAl");
         //        }
 
-
-        //        // Eğer çakışma yoksa randevu kaydedilir
+        //        // Randevu kaydet
         //        _context.Rendevular.Add(rendevu);
         //        _context.SaveChanges();
         //        TempData["msj"] = $"{rendevu.MusteriAd} için randevu başarıyla kaydedildi.";
@@ -128,6 +102,38 @@ namespace Web_Programlama__Proje.Controllers
         //    TempData["msj"] = "Lütfen bilgilerin doğruluğundan emin olun!";
         //    return RedirectToAction("RendevuAl");
         //}
+
+        //[HttpPost]
+        //public IActionResult RandevuKaydet(Rendevu rendevu)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Randevuyu kaydet
+        //        _context.Rendevular.Add(rendevu);
+        //        _context.SaveChanges();
+
+        //        // Seçilen saat ve çakışan saatleri sil
+        //        if (rendevu.RendevuZaman != null && rendevu.PersonelID != 0)
+        //        {
+        //            var calismaSaati = _context.PersonelCalismaSaati
+        //                .Where(cs => cs.PersonelID == rendevu.PersonelID && cs.CalismaSaati == rendevu.RendevuZaman.TimeOfDay)
+        //                .FirstOrDefault();
+
+        //            if (calismaSaati != null)
+        //            {
+        //                _context.PersonelCalismaSaati.Remove(calismaSaati);
+        //                _context.SaveChanges();
+        //            }
+        //        }
+
+        //        TempData["msj"] = "Randevu başarıyla kaydedildi.";
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    TempData["msj"] = "Lütfen tüm alanları doldurunuz.";
+        //    return RedirectToAction("RendevuAl");
+        //}
+        [HttpPost]
         public IActionResult RendevuKaydet(Rendevu rendevu)
         {
             if (ModelState.IsValid)
@@ -139,11 +145,9 @@ namespace Web_Programlama__Proje.Controllers
 
                 if (mevcutRandevular.Any(r => r.RendevuZaman.Date >= DateTime.Now.Date))
                 {
-                    // Eğer müşteri bugün veya daha sonraki bir tarihte randevu almışsa, uyarı ver
                     TempData["msj_sorgula"] = "Bu e-posta veya telefon numarasıyla bugüne veya geleceğe ait bir randevu zaten alınmış!";
-                    return RedirectToAction("RendevuSorgula"); // Uygun sayfaya yönlendirme
+                    return RedirectToAction("RendevuSorgula");
                 }
-
 
                 // Hizmetlerin toplam süresini hesapla
                 int toplamHizmetSuresi = 0;
@@ -152,7 +156,7 @@ namespace Web_Programlama__Proje.Controllers
                     var hizmet = _context.Hizmetler.Find(hizmetId);
                     if (hizmet != null)
                     {
-                        toplamHizmetSuresi += hizmet.HizmetSuresi; // Hizmet süresinin int olduğunu varsaydık
+                        toplamHizmetSuresi += hizmet.HizmetSuresi;
                     }
                 }
 
@@ -183,6 +187,23 @@ namespace Web_Programlama__Proje.Controllers
                 // Randevu kaydet
                 _context.Rendevular.Add(rendevu);
                 _context.SaveChanges();
+
+                // Seçilen saat ve çakışan saatleri personel çalışma saatlerinden sil
+                if (rendevu.RendevuZaman != null && rendevu.PersonelID != 0)
+                {
+                    var calismaSaatleri = _context.PersonelCalismaSaati
+                        .Where(cs => cs.PersonelID == rendevu.PersonelID
+                                     && cs.CalismaSaati >= rendevu.RendevuZaman.TimeOfDay
+                                     && cs.CalismaSaati < rendevu.RendevuZaman.TimeOfDay.Add(TimeSpan.FromMinutes(toplamHizmetSuresi)))
+                        .ToList();
+
+                    if (calismaSaatleri.Any())
+                    {
+                        _context.PersonelCalismaSaati.RemoveRange(calismaSaatleri);
+                        _context.SaveChanges();
+                    }
+                }
+
                 TempData["msj"] = $"{rendevu.MusteriAd} için randevu başarıyla kaydedildi.";
                 return RedirectToAction("Rendevular");
             }
@@ -190,7 +211,6 @@ namespace Web_Programlama__Proje.Controllers
             TempData["msj"] = "Lütfen bilgilerin doğruluğundan emin olun!";
             return RedirectToAction("RendevuAl");
         }
-
 
 
         public IActionResult RendavuDetay(int? id)
@@ -351,18 +371,43 @@ public IActionResult RendevuDuzenle(int? id)
             return RedirectToAction("Rendevular");
 
         }
-       
+
+        //public IActionResult RendevuAl()
+        //{
+        //    var personeller = _context.Personaller
+        //.Select(p => new { p.PersonelID, FullName = p.PersonelAd + " " + p.PersonelSoyAd }).ToList();
+        //    ViewBag.PersonelListesi = new SelectList(personeller, "PersonelID", "FullName");
+
+        //    var hizmetler = _context.Hizmetler.ToList();
+        //    ViewBag.HizmetListesi = hizmetler;
+
+        //    return View();
+        //}
         public IActionResult RendevuAl()
         {
             var personeller = _context.Personaller
-        .Select(p => new { p.PersonelID, FullName = p.PersonelAd + " " + p.PersonelSoyAd }).ToList();
+                .Select(p => new { p.PersonelID, FullName = p.PersonelAd + " " + p.PersonelSoyAd })
+                .ToList();
+
             ViewBag.PersonelListesi = new SelectList(personeller, "PersonelID", "FullName");
-
-            var hizmetler = _context.Hizmetler.ToList();
-            ViewBag.HizmetListesi = hizmetler;
-
+            ViewBag.HizmetListesi = _context.Hizmetler.ToList();
             return View();
         }
+
+
+        [HttpPost]
+        public IActionResult GetAvailableHoursInView(int personelID, DateTime tarih)
+        {
+            var calismaSaatleri = _context.PersonelCalismaSaati
+                .Where(cs => cs.PersonelID == personelID && cs.Tarih.Date == tarih.Date)
+                .Select(cs => cs.CalismaSaati)
+                .ToList();
+
+            System.Diagnostics.Debug.WriteLine($"Çalışma Saatleri: {string.Join(", ", calismaSaatleri)}");
+
+            return PartialView("_UygunSaatler", calismaSaatleri);
+        }
+
         [HttpGet]
         public JsonResult CheckAvailability(int personelID, DateTime randevuZaman, int toplamHizmetSuresi)
         {
@@ -389,7 +434,222 @@ public IActionResult RendevuDuzenle(int? id)
 
             return Json(new { isAvailable = !cakisiyorMu });
         }
+        [HttpPost]
+        public JsonResult DeleteHour([FromBody] DeleteHourRequest request)
+        {
+            try
+            {
+                // Verilen tarih ve saati birleştirerek karşılaştırma yap
+                DateTime combinedDateTime = DateTime.Parse($"{request.Tarih} {request.Hour}");
 
+                // Çalışma saati tablosundan uygun kaydı bul
+                var calismaSaati = _context.PersonelCalismaSaati
+                    .FirstOrDefault(cs => cs.PersonelID == request.PersonelID
+                                          && cs.Tarih.Date == combinedDateTime.Date
+                                          && cs.CalismaSaati == combinedDateTime.TimeOfDay);
+
+                if (calismaSaati != null)
+                {
+                    _context.PersonelCalismaSaati.Remove(calismaSaati); // Saat kaydını sil
+                    _context.SaveChanges(); // Değişiklikleri kaydet
+                    return Json(new { success = true });
+                }
+
+                return Json(new { success = false, message = "Çalışma saati bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        // Request için kullanılan DTO sınıfı
+        public class DeleteHourRequest
+        {
+            public int PersonelID { get; set; }
+            public string Tarih { get; set; }
+            public string Hour { get; set; }
+        }
+
+
+        //[HttpGet]
+        //public JsonResult GetAvailableHours(int personelID, DateTime date)
+        //{
+        //    // Personel ve çalışma saatleri alınır
+        //    var personel = _context.Personaller
+        //        .Include(p => p.PersonelCalismaSaati)
+        //        .FirstOrDefault(p => p.PersonelID == personelID);
+
+        //    if (personel == null || personel.PersonelCalismaSaati == null)
+        //    {
+        //        return Json(new { success = false, message = "Personel veya çalışma saatleri bulunamadı." });
+        //    }
+
+        //    // Çalışma saatlerini al
+        //    var calismaSaatleri = personel.PersonelCalismaSaati.Select(cs => cs.CalismaSaati).ToList();
+
+        //    // Mevcut randevuların saatlerini kontrol et
+        //    var mevcutRandevular = _context.Rendevular
+        //        .Where(r => r.PersonelID == personelID && r.RendevuZaman.Date == date.Date)
+        //        .Select(r => r.RendevuZaman.TimeOfDay)
+        //        .ToList();
+
+        //    // Uygun saatleri filtrele
+        //    var uygunSaatler = calismaSaatleri.Where(cs => !mevcutRandevular.Contains(cs)).ToList();
+
+        //    return Json(new { success = true, hours = uygunSaatler });
+        //}
+        //[HttpGet]
+        //public JsonResult GetAvailableHours(int personelID, DateTime date)
+        //{
+        //    var personel = _context.Personaller
+        //        .Include(p => p.PersonelCalismaSaati)
+        //        .FirstOrDefault(p => p.PersonelID == personelID);
+
+        //    if (personel == null || personel.PersonelCalismaSaati == null)
+        //        return Json(new { success = false, message = "Personel bilgisi bulunamadı." });
+
+        //    var calismaSaatleri = personel.PersonelCalismaSaati.Select(cs => cs.CalismaSaati).ToList();
+
+        //    // Mevcut randevuları al
+        //    var mevcutRandevular = _context.Rendevular
+        //        .Where(r => r.PersonelID == personelID && r.RendevuZaman.Date == date.Date)
+        //        .ToList()
+        //        .Select(r =>
+        //        {
+        //            var toplamSuresi = r.Hizmetler
+        //                .Select(hizmetID => _context.Hizmetler.FirstOrDefault(h => h.HizmetID == hizmetID)?.HizmetSuresi ?? 0)
+        //                .Sum();
+
+        //            return new
+        //            {
+        //                Baslangic = r.RendevuZaman.TimeOfDay,
+        //                Bitis = r.RendevuZaman.AddMinutes(toplamSuresi).TimeOfDay
+        //            };
+        //        })
+        //        .ToList();
+
+        //    // Uygun saatleri filtrele
+        //    var uygunSaatler = calismaSaatleri
+        //        .Where(cs => !mevcutRandevular.Any(mr => cs >= mr.Baslangic && cs < mr.Bitis))
+        //        .ToList();
+
+        //    if (!uygunSaatler.Any())
+        //        return Json(new { success = false, message = "Uygun saat yok." });
+
+        //    var formattedHours = uygunSaatler.Select(cs => cs.ToString(@"hh\:mm")).ToList();
+        //    return Json(new { success = true, hours = formattedHours });
+        //}
+        //[HttpGet]
+        //public JsonResult GetAvailableHours(int personelID, DateTime date)
+        //{
+        //    // Personelin o gün çalıştığı saatleri al
+        //    var calismaSaatleri = _context.PersonelCalismaSaati
+        //        .Where(cs => cs.PersonelID == personelID && cs.Tarih.Date == date.Date)
+        //        .Select(cs => cs.CalismaSaati)
+        //        .OrderBy(cs => cs)
+        //        .ToList();
+
+        //    if (!calismaSaatleri.Any())
+        //    {
+        //        return Json(new { success = false, message = "Çalışma saatleri bulunamadı." });
+        //    }
+
+        //    // Mevcut randevuları ve çakışma sürelerini kontrol et
+        //    var mevcutRandevular = _context.Rendevular
+        //        .Where(r => r.PersonelID == personelID && r.RendevuZaman.Date == date.Date)
+        //        .Include(r => r.RendevuHizmetler) // Ara tabloyu dahil et
+        //        .ThenInclude(rh => rh.Hizmetler) // Hizmetler tablosunu dahil et
+        //        .Select(r => new
+        //        {
+        //            Baslangic = r.RendevuZaman.TimeOfDay,
+        //            Bitis = r.RendevuZaman.TimeOfDay.Add(TimeSpan.FromMinutes(
+        //                r.RendevuHizmetler.Sum(rh => rh.Hizmetler.HizmetSuresi) // Hizmet sürelerini topla
+        //            ))
+        //        })
+        //        .ToList();
+
+        //    // Çakışma kontrolü
+        //    var uygunSaatler = calismaSaatleri
+        //        .Where(cs => !mevcutRandevular.Any(r =>
+        //            cs >= r.Baslangic && cs < r.Bitis // Çakışma kontrolü
+        //        ))
+        //        .OrderBy(cs => cs)
+        //        .ToList();
+
+        //    // Saatleri döndür
+        //    if (!uygunSaatler.Any())
+        //    {
+        //        return Json(new { success = false, message = "Uygun saat bulunamadı." });
+        //    }
+
+        //    var formattedHours = uygunSaatler.Select(cs => cs.ToString(@"hh\:mm")).ToList();
+        //    return Json(new { success = true, hours = formattedHours });
+        //}
+        [HttpGet]
+        public JsonResult GetAvailableHours(int personelID, DateTime tarih)
+        {
+            // Çalışma saatlerini al
+            var calismaSaatleri = _context.PersonelCalismaSaati
+                .Where(cs => cs.PersonelID == personelID && cs.Tarih.Date == tarih.Date)
+                .Select(cs => cs.CalismaSaati)
+                .ToList();
+
+            // Mevcut randevuları al
+            var mevcutRandevular = _context.Rendevular
+                .Where(r => r.PersonelID == personelID && r.RendevuZaman.Date == tarih.Date)
+                .Select(r => new
+                {
+                    Baslangic = r.RendevuZaman.TimeOfDay,
+                    Bitis = r.RendevuZaman.TimeOfDay.Add(TimeSpan.FromMinutes(
+                        r.RendevuHizmetler.Sum(rh => rh.Hizmetler.HizmetSuresi)
+                    ))
+                })
+                .ToList();
+
+            // Uygun saatleri hesapla
+            var uygunSaatler = calismaSaatleri
+                .Where(cs => !mevcutRandevular.Any(r =>
+                    cs >= r.Baslangic && cs < r.Bitis
+                ))
+                .ToList();
+
+            // Eğer çalışma saatleri varsa, bunları döndür
+            if (uygunSaatler.Any())
+            {
+                return Json(new { success = true, uygunSaatler = uygunSaatler.Select(cs => cs.ToString(@"hh\:mm")).ToList() });
+            }
+
+            return Json(new { success = false, message = "Bu tarihte uygun saat bulunamadı." });
+        }
+
+
+        public IActionResult RendevuSorgula()
+        {
+            return View();
+        }
+        public IActionResult RendevuSonuc()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RendevuSorgulaSonuc(string MusteriEmail, string MusteriTelefonNo)
+        {
+            var randevular = _context.Rendevular
+                .Include(r => r.Personel)
+                .Where(r => r.MusteriMail == MusteriEmail && r.MusteriTelefonNo == MusteriTelefonNo)
+                .ToList();
+
+            if (!randevular.Any())
+            {
+                TempData["msj_sorgula"] = "Girilen bilgilere ait bir randevu bulunamadı.";
+                return RedirectToAction("RendevuSorgula");
+            }
+
+            ViewBag.HizmetListesi = _context.Hizmetler.ToList();
+            return View("RendevuSonuc", randevular);
+        }
 
     }
 }

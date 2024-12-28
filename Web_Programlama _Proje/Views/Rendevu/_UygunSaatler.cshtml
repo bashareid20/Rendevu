@@ -1,0 +1,15 @@
+﻿@model List<TimeSpan>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var saat in Model)
+    {
+        <button type="button" class="btn btn-outline-primary m-1" onclick="selectHour('@saat')">
+            @saat.ToString(@"hh\:mm")
+        </button>
+    }
+}
+else
+{
+    <p class="text-danger">Bu tarihte uygun saat bulunamadı.</p>
+}

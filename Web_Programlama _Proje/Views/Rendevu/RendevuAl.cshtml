@@ -1,4 +1,4 @@
-﻿@model Web_Programlama__Proje.Models.Rendevu
+﻿@* @model Web_Programlama__Proje.Models.Rendevu
 
 @{
     ViewBag.Title = "Randevu Al";
@@ -51,11 +51,7 @@
                             <input asp-for="MusteriMail" type="email" class="form-control bg-transparent text-white" />
                             <span asp-validation-for="MusteriMail" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-3">
-                            <label asp-for="RendevuZaman" class="form-label text-white"></label>
-                            <input asp-for="RendevuZaman" type="datetime-local" class="form-control bg-transparent text-white" id="randevuTarihSaat" />
-                            <span asp-validation-for="RendevuZaman" class="text-danger"></span>
-                        </div>
+                      
                         <div class="form-group mb-3">
                             <label for="PersonelID" class="form-label text-white">Personel Seçimi</label>
                             <select asp-for="PersonelID"
@@ -65,7 +61,11 @@
                             </select>
                             <span asp-validation-for="PersonelID" class="text-danger"></span>
                         </div>
-
+                        <div class="form-group mb-3">
+                            <label asp-for="RendevuZaman" class="form-label text-white"></label>
+                            <input asp-for="RendevuZaman" type="datetime-local" class="form-control bg-transparent text-white" id="randevuTarihSaat" />
+                            <span asp-validation-for="RendevuZaman" class="text-danger"></span>
+                        </div>
                         <!-- Hizmetler Seçimi -->
                         <div class="form-group mb-3">
                             <label>Hizmetler</label>
@@ -179,3 +179,1333 @@
         });
     </script>
 }
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert-danger">@TempData["msj"]</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatler" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <select name="Hizmetler" class="form-control">
+                @foreach (var hizmet in ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>)
+                {
+                    <option value="@hizmet.HizmetID">@hizmet.HizmetAd</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const personelSelect = document.getElementById("personelSelect");
+
+        personelSelect.addEventListener("change", function () {
+            const personelID = this.value;
+            const tarih = new Date().toISOString().split('T')[0]; // Bugünün tarihi
+
+            if (personelID) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&date=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatler");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success) {
+                            data.hours.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    alert(`${hour} saati seçildi!`);
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Uygun saat yok.</p>";
+                        }
+                    });
+            }
+        });
+    </script>
+} *@
+@* @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert-danger">@TempData["msj"]</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatler" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+
+                document.getElementById("uygunSaatler").addEventListener("click", function (e) {
+            if (e.target.tagName === "BUTTON") {
+                const saat = e.target.textContent;
+                document.getElementById("randevuTarihSaat").value = `${document.getElementById("randevuTarih").value}T${saat}`;
+                alert(`${saat} saati seçildi.`);
+            }
+        });
+
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                            </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+
+        const personelSelect = document.getElementById("personelSelect");
+        const randevuTarih = document.getElementById("randevuTarih");
+
+        function loadAvailableHours() {
+            const personelID = personelSelect.value;
+            const tarih = randevuTarih.value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&date=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatler");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success) {
+                            data.hours.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1 hour-button";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    // Seçilen saati inputa ekle
+                                    const selectedHourInput = document.getElementById("selectedHour");
+                                    selectedHourInput.value = `${tarih}T${hour}`;
+
+                                    // Çakışan saatleri kaldır
+                                    const hizmetSelects = document.querySelectorAll(".hizmet-select");
+                                    let toplamSure = 0;
+
+                                    hizmetSelects.forEach(select => {
+                                        const sure = parseInt(select.options[select.selectedIndex]?.getAttribute("data-sure")) || 0;
+                                        toplamSure += sure;
+                                    });
+
+                                    const selectedHourTime = new Date(`1970-01-01T${hour}`);
+                                    const bitisTime = new Date(selectedHourTime.getTime() + toplamSure * 60000);
+
+                                    const saatButonlari = document.querySelectorAll(".hour-button");
+                                    saatButonlari.forEach(btn => {
+                                        const buttonTime = new Date(`1970-01-01T${btn.textContent}`);
+                                        if (buttonTime >= selectedHourTime && buttonTime < bitisTime) {
+                                            btn.style.display = "none";
+                                        }
+                                    });
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Uygun saat yok.</p>";
+                        }
+                    });
+            }
+        }
+
+        personelSelect.addEventListener("change", loadAvailableHours);
+        randevuTarih.addEventListener("change", loadAvailableHours);
+    </script>
+}
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert-danger">@TempData["msj"]</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatler" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                                <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                                </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+
+        const personelSelect = document.getElementById("personelSelect");
+        const randevuTarih = document.getElementById("randevuTarih");
+
+        function loadAvailableHours() {
+            const personelID = personelSelect.value;
+            const tarih = randevuTarih.value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&date=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatler");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success) {
+                            data.hours.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1 hour-button";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    // Seçilen saati inputa ekle
+                                    const selectedHourInput = document.getElementById("selectedHour");
+                                    selectedHourInput.value = `${tarih}T${hour}`;
+
+                                    // Çakışan saatleri kaldır
+                                    const hizmetSelects = document.querySelectorAll(".hizmet-select");
+                                    let toplamSure = 0;
+
+                                    hizmetSelects.forEach(select => {
+                                        const sure = parseInt(select.options[select.selectedIndex]?.getAttribute("data-sure")) || 0;
+                                        toplamSure += sure;
+                                    });
+
+                                    const selectedHourTime = new Date(`1970-01-01T${hour}`);
+                                    const bitisTime = new Date(selectedHourTime.getTime() + toplamSure * 60000);
+
+                                    const saatButonlari = document.querySelectorAll(".hour-button");
+                                    saatButonlari.forEach(btn => {
+                                        const buttonTime = new Date(`1970-01-01T${btn.textContent}`);
+                                        if (buttonTime >= selectedHourTime && buttonTime < bitisTime) {
+                                            btn.style.display = "none";
+                                        }
+                                    });
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Uygun saat yok.</p>";
+                        }
+                    });
+            }
+        }
+
+        personelSelect.addEventListener("change", loadAvailableHours);
+        randevuTarih.addEventListener("change", loadAvailableHours);
+    </script>
+}
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control">
+                <option value="">Personel Seçin</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input asp-for="RendevuZaman" type="date" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            @if (ViewBag.UygunSaatler != null)
+            {
+                <div>
+                    @foreach (var saat in ViewBag.UygunSaatler)
+                    {
+                        <button type="button" class="btn btn-outline-primary m-1">
+                            @saat.ToString("hh\\:mm")
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <select name="Hizmetler" class="form-control">
+                @foreach (var hizmet in ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>)
+                {
+                    <option value="@hizmet.HizmetID">@hizmet.HizmetAd</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" asp-for="RendevuZaman" class="form-control" id="randevuTarih" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatler">
+                <!-- Uygun saatler dinamik olarak buraya yüklenecek -->
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+<script>
+      document.getElementById("personelSelect").addEventListener("change", loadAvailableHours);
+    document.getElementById("randevuTarih").addEventListener("change", loadAvailableHours);
+
+    function loadAvailableHours() {
+        const personelID = document.getElementById("personelSelect").value;
+        const tarih = document.getElementById("randevuTarih").value;
+
+        if (personelID && tarih) {
+            fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+                .then(response => response.json())
+                .then(data => {
+                    const saatlerDiv = document.getElementById("uygunSaatler");
+                    saatlerDiv.innerHTML = "";
+
+                    if (data.success && data.uygunSaatler.length > 0) {
+                        data.uygunSaatler.forEach(saat => {
+                            saatlerDiv.innerHTML += `<button type="button" class="btn btn-outline-primary m-1">${saat}</button>`;
+                        });
+                    } else {
+                        saatlerDiv.innerHTML = `<p class="text-danger">Bu tarihte uygun saat bulunamadı.</p>`;
+                    }
+                })
+                .catch(error => console.error("Hata:", error));
+        }
+    }
+
+</script>
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+
+        <!-- Uygun Saatler Dinamik Olarak Eklenecek -->
+        <div id="uygunSaatlerContainer"></div>
+
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("personelSelect").addEventListener("change", loadAvailableHours);
+        document.getElementById("randevuTarih").addEventListener("change", loadAvailableHours);
+
+               function loadAvailableHours() {
+            const personelID = document.getElementById("personelSelect").value;
+            const tarih = document.getElementById("randevuTarih").value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatlerContainer");
+                        saatlerDiv.innerHTML = "";
+
+                        if (data.success) {
+                            data.uygunSaatler.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    document.getElementById("selectedHour").value = `${tarih}T${hour}`;
+                                    alert(`Seçilen saat: ${hour}`);
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Bu tarihte uygun saat bulunamadı.</p>";
+                        }
+                    });
+            }
+        }
+
+
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                            </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            document.querySelectorAll(".hizmet-select").forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+    </script>
+}
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatlerContainer" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                            </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+
+        const personelSelect = document.getElementById("personelSelect");
+        const randevuTarih = document.getElementById("randevuTarih");
+
+        function loadAvailableHours() {
+            const personelID = personelSelect.value;
+            const tarih = randevuTarih.value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatlerContainer");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success && data.uygunSaatler.length > 0) {
+                            data.uygunSaatler.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    document.getElementById("selectedHour").value = `${tarih}T${hour}`;
+                                    deleteHourFromDatabase(personelID, tarih, hour); // Veritabanından saati sil
+                                    this.remove(); // Seçilen saati butondan kaldır
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Bu tarihte uygun saat bulunamadı.</p>";
+                        }
+                    })
+                    .catch(error => console.error("Hata:", error));
+            }
+        }
+
+        function deleteHourFromDatabase(personelID, tarih, hour) {
+            fetch(`/Rendevu/DeleteHour`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ personelID, tarih, hour })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert("Saat veritabanından silinemedi.");
+                    }
+                })
+                .catch(error => console.error("Hata:", error));
+        }
+
+        personelSelect.addEventListener("change", loadAvailableHours);
+        randevuTarih.addEventListener("change", loadAvailableHours);
+    </script>
+}
+ *@
+@*  @model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatlerContainer" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                            </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+
+        const personelSelect = document.getElementById("personelSelect");
+        const randevuTarih = document.getElementById("randevuTarih");
+
+        function loadAvailableHours() {
+            const personelID = personelSelect.value;
+            const tarih = randevuTarih.value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatlerContainer");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success && data.uygunSaatler.length > 0) {
+                            data.uygunSaatler.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    document.getElementById("selectedHour").value = `${tarih}T${hour}`;
+                                    deleteHourFromDatabase(personelID, tarih, hour); // Veritabanından saati sil
+                                    this.remove(); // Seçilen saati butondan kaldır
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Bu tarihte uygun saat bulunamadı.</p>";
+                        }
+                    })
+                    .catch(error => console.error("Hata:", error));
+            }
+        }
+
+        function deleteHourFromDatabase(personelID, tarih, hour) {
+            fetch(`/Rendevu/DeleteHour`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ personelID, tarih, hour })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert("Saat veritabanından silinemedi.");
+                    }
+                })
+                .catch(error => console.error("Hata:", error));
+        }
+
+        personelSelect.addEventListener("change", loadAvailableHours);
+        randevuTarih.addEventListener("change", loadAvailableHours);
+    </script>
+} *@
+@model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Al";
+    var hizmetler = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Al</h2>
+    <form asp-action="RendevuKaydet" method="post">
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" />
+            <span asp-validation-for="MusteriAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" />
+            <span asp-validation-for="MusteriSoyAd" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" />
+            <span asp-validation-for="MusteriTelefonNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" />
+            <span asp-validation-for="MusteriMail" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Personel Seçimi</label>
+            <select asp-for="PersonelID" asp-items="ViewBag.PersonelListesi" class="form-control" id="personelSelect">
+                <option value="">Personel Seçin</option>
+            </select>
+            <span asp-validation-for="PersonelID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input type="date" id="randevuTarih" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Uygun Saatler</label>
+            <div id="uygunSaatlerContainer" class="d-flex flex-wrap gap-2">
+                <!-- Uygun saatler dinamik olarak buraya eklenecek -->
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="RendevuZaman" id="selectedHour" />
+
+        <div class="form-group mb-3">
+            <label>Hizmetler</label>
+            <div id="hizmetListesi">
+                <div class="d-flex mb-2">
+                    <select name="Hizmetler[0]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                        <option value="">Hizmet Seç</option>
+                        @foreach (var hizmet in hizmetler)
+                        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                                @hizmet.HizmetAd
+                            </option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-success" onclick="hizmetEkle()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Toplam Fiyat</label>
+            <input type="text" id="toplamFiyat" class="form-control" value="0" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Randevu Al</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        let hizmetIndex = 1;
+
+        function hizmetEkle() {
+            const hizmetlerDiv = document.getElementById("hizmetListesi");
+
+            const yeniSatir = document.createElement("div");
+            yeniSatir.className = "d-flex mb-2";
+            yeniSatir.innerHTML = `
+                <select name="Hizmetler[${hizmetIndex}]" class="form-control me-2 hizmet-select" onchange="hesaplaToplamFiyat()">
+                    <option value="">Hizmet Seç</option>
+        @foreach (var hizmet in hizmetler)
+        {
+                            <option value="@hizmet.HizmetID" data-fiyat="@hizmet.HizmetUcreti" data-sure="@hizmet.HizmetSuresi">
+                @hizmet.HizmetAd
+                            </option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger" onclick="hizmetKaldir(this)">-</button>
+            `;
+            hizmetlerDiv.appendChild(yeniSatir);
+            hizmetIndex++;
+        }
+
+        function hizmetKaldir(button) {
+            button.parentElement.remove();
+            hesaplaToplamFiyat();
+        }
+
+        function hesaplaToplamFiyat() {
+            let toplamFiyat = 0;
+            const hizmetSelects = document.querySelectorAll(".hizmet-select");
+
+            hizmetSelects.forEach(select => {
+                const fiyat = parseFloat(select.options[select.selectedIndex]?.getAttribute("data-fiyat")) || 0;
+                toplamFiyat += fiyat;
+            });
+
+            document.getElementById("toplamFiyat").value = toplamFiyat.toFixed(2);
+        }
+
+        const personelSelect = document.getElementById("personelSelect");
+        const randevuTarih = document.getElementById("randevuTarih");
+
+        // function loadAvailableHours() {
+        //     const personelID = personelSelect.value;
+        //     const tarih = randevuTarih.value;
+
+        //     if (personelID && tarih) {
+        //         fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 const saatlerDiv = document.getElementById("uygunSaatlerContainer");
+        //                 saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+        //                 if (data.success && data.uygunSaatler.length > 0) {
+        //                     data.uygunSaatler.forEach(hour => {
+        //                         const button = document.createElement("button");
+        //                         button.type = "button";
+        //                         button.className = "btn btn-outline-primary m-1";
+        //                         button.textContent = hour;
+        //                         button.addEventListener("click", function () {
+        //                             selectHour(this);
+        //                         });
+        //                         saatlerDiv.appendChild(button);
+        //                     });
+        //                 } else {
+        //                     saatlerDiv.innerHTML = "<p class='text-danger'>Bu tarihte uygun saat bulunamadı.</p>";
+        //                 }
+        //             })
+        //             .catch(error => console.error("Hata:", error));
+        //     }
+        // }
+                function loadAvailableHours() {
+            const personelID = document.getElementById("personelSelect").value;
+            const tarih = document.getElementById("randevuTarih").value;
+
+            if (personelID && tarih) {
+                fetch(`/Rendevu/GetAvailableHours?personelID=${personelID}&tarih=${tarih}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const saatlerDiv = document.getElementById("uygunSaatlerContainer");
+                        saatlerDiv.innerHTML = ""; // Önceki saatleri temizle
+
+                        if (data.success && data.uygunSaatler.length > 0) {
+                            data.uygunSaatler.forEach(hour => {
+                                const button = document.createElement("button");
+                                button.type = "button";
+                                button.className = "btn btn-outline-primary m-1";
+                                button.textContent = hour;
+                                button.addEventListener("click", function () {
+                                    document.getElementById("selectedHour").value = `${tarih}T${hour}`;
+                                    this.classList.add("btn-danger");
+                                    this.classList.remove("btn-outline-primary");
+                                });
+                                saatlerDiv.appendChild(button);
+                            });
+                        } else {
+                            saatlerDiv.innerHTML = "<p class='text-danger'>Bu tarihte uygun saat bulunamadı.</p>";
+                        }
+                    })
+                    .catch(error => console.error("Hata:", error));
+            }
+        }
+
+
+        function selectHour(button) {
+            // Tüm butonları varsayılan hale döndür
+            document.querySelectorAll("#uygunSaatlerContainer button").forEach(btn => {
+                btn.classList.remove("btn-danger");
+                btn.classList.add("btn-outline-primary");
+            });
+
+            // Seçilen butonu işaretle
+            button.classList.add("btn-danger");
+            button.classList.remove("btn-outline-primary");
+
+            // Seçilen saati input alanına yaz
+            const tarih = document.getElementById("randevuTarih").value;
+            document.getElementById("selectedHour").value = `${tarih}T${button.textContent}`;
+        }
+
+        personelSelect.addEventListener("change", loadAvailableHours);
+        randevuTarih.addEventListener("change", loadAvailableHours);
+    </script>
+}
+

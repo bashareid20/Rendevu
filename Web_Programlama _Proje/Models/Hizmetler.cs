@@ -18,6 +18,7 @@ namespace Web_Programlama__Proje.Models
         public int HizmetSuresi { get; set; }
         [Display(Name = "Hizmet Resimi")]
         public string? HizmetResim { get; set; }
+        public ICollection<RendevuHizmet>? RendevuHizmetler { get; set; }
         public ICollection<PersonelHizmet>? PersonelHizmetler { get; set; }
     }
 }

@@ -49,9 +49,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav me-auto p-4 p-lg-0">
-                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active" style="margin-left: 10px;">Ana Sayfa</a>
                 <a asp-controller="Home" asp-action="Hakkimizda" class="nav-item nav-link">Hakkimizda</a>
-                <a asp-controller="Hizmetler" asp-action="HizmetYazdir" class="nav-item nav-link">Hizmetler</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Hizmetler" asp-action="Index" class="nav-item nav-link">Hizmetler</a>
+                    <a asp-controller="Admin" asp-action="Index" class="nav-item nav-link">Onayla</a>
+                    <a asp-controller="Rendevu" asp-action="Rendevular" class="nav-item nav-link">Rendevular</a>
+                    <a asp-controller="Personel" asp-action="Personller" class="nav-item nav-link">Personller</a>
+                }
+
+                else
+                {
+                    <a asp-controller="Hizmetler" asp-action="HizmetYazdir" class="nav-item nav-link">Hizmetler</a>
+                }
+                
                 @if (User.Identity.IsAuthenticated){
                     <a asp-controller="KayitliRendevu" asp-action="RandevuAl" class="nav-item nav-link">Randevu Al</a>
 
@@ -61,8 +73,7 @@
                     <a asp-controller="Rendevu" asp-action="RendevuAl" class="nav-item nav-link">Rendevu Al</a>
                 }
              
-                <a asp-controller="Rendevu" asp-action="Rendevular" class="nav-item nav-link">Rendevular</a>
-                <a asp-controller="Personel" asp-action="Personller" class="nav-item nav-link">Personller</a>
+               
                 
 
                 <div class="nav-item dropdown">
@@ -79,6 +90,10 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Rest Api</a>
                     <div class="dropdown-menu m-0">
                         <a asp-controller="RendevuConsumeApi" asp-action="RendevuGetir" class="dropdown-item">Rendevuları Getir</a>
+                        <a asp-controller="RendevuConsumeApi" asp-action="RendevuSil" class="dropdown-item">Rendevuları Sil</a>
+                        <a asp-controller="RendevuConsumeApi" asp-action="RandevuGuncelle" class="dropdown-item">Rendevuları Güncelle</a>
+
+
                     </div>
                 </div>
 

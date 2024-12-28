@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Web_Programlama__Proje.Models.Rendevu>
 
 <div class="container mt-4">
-    <div class="alert-danger" > @TempData["msj"]</div>
+    <div class="alert-danger"> @TempData["msj"]</div>
     <h2 class="text-center mb-4 text-primary">Randevular</h2>
 
     <div class="d-flex justify-content-end mb-3">
@@ -18,7 +18,7 @@
                     <th>@Html.DisplayNameFor(model => model.First().MusteriTelefonNo)</th>
                     <th>@Html.DisplayNameFor(model => model.First().MusteriMail)</th>
                     <th>@Html.DisplayNameFor(model => model.First().RendevuZaman)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().RendevuOnayDurumu)</th>
+                    <th>Durum</th>
                     <th>İşlemler</th>
                 </tr>
             </thead>
@@ -31,15 +31,19 @@
                         <td>@Html.DisplayFor(modelItem => item.MusteriSoyAd)</td>
                         <td>@Html.DisplayFor(modelItem => item.MusteriTelefonNo)</td>
                         <td class="text-danger">@Html.DisplayFor(modelItem => item.MusteriMail)</td>
-                        <td>@Html.DisplayFor(modelItem => item.RendevuZaman)</td>
+                        <td>@item.RendevuZaman.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>
-                            @if (!item.RendevuOnayDurumu)
+                            @if (item.RendevuDurumu == null)
                             {
                                 <span class="badge bg-warning text-dark">Onay Bekliyor</span>
                             }
-                            else
+                            else if (item.RendevuDurumu == 1)
                             {
                                 <span class="badge bg-success">Onaylandı</span>
+                            }
+                            else if (item.RendevuDurumu == 0)
+                            {
+                                <span class="badge bg-danger">Reddedildi</span>
                             }
                         </td>
                         <td>

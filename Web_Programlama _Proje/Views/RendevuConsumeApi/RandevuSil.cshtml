@@ -1,0 +1,41 @@
+﻿@model Web_Programlama__Proje.Models.Rendevu
+
+@{
+    ViewBag.Title = "Randevu Sil";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Randevu Sil</h2>
+    <form asp-action="RendevuSil" method="post">
+        <div class="alert alert-warning" role="alert">
+            <p>Bu randevuyu silmek istediğinize emin misiniz?</p>
+        </div>
+        <div class="form-group mb-3">
+            <label>Ad</label>
+            <input asp-for="MusteriAd" class="form-control" readonly />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Soyad</label>
+            <input asp-for="MusteriSoyAd" class="form-control" readonly />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Telefon</label>
+            <input asp-for="MusteriTelefonNo" type="tel" class="form-control" readonly />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input asp-for="MusteriMail" type="email" class="form-control" readonly />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Randevu Tarihi</label>
+            <input asp-for="RendevuZaman" type="datetime-local" class="form-control" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a asp-action="RendevuGetir" class="btn btn-secondary">Vazgeç</a>
+    </form>
+</div>

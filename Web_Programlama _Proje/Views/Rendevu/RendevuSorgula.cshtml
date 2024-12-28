@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Randevu Sorgula";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout kullanılacaksa, projenize göre bu ayarı kontrol edin.
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary">Randevu Sorgula</h2>
+
+    @if (TempData["msj_sorgula"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["msj_sorgula"]
+        </div>
+    }
+
+    <form asp-action="RendevuSorgulaSonuc" method="post">
+        <div class="form-group mb-3">
+            <label for="MusteriEmail">E-posta Adresiniz</label>
+            <input type="email" name="MusteriEmail" id="MusteriEmail" class="form-control" required />
+        </div>
+        <div class="form-group mb-3">
+            <label for="MusteriTelefonNo">Telefon Numaranız</label>
+            <input type="tel" name="MusteriTelefonNo" id="MusteriTelefonNo" class="form-control" required />
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Randevu Sorgula</button>
+        </div>
+    </form>
+</div>

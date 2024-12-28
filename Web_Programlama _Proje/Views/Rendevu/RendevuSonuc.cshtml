@@ -1,0 +1,73 @@
+﻿@model List<Web_Programlama__Proje.Models.Rendevu>
+
+@{
+    ViewBag.Title = "Randevu Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Projenize göre Layout yolunu ayarlayın
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary">Randevu Sonuçları</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning mt-3">
+            Girilen bilgilere ait bir randevu bulunamadı.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Müşteri Adı</th>
+                    <th>Müşteri Soyadı</th>
+                    <th>Telefon</th>
+                    <th>E-posta</th>
+                    <th>Randevu Tarihi</th>
+                    <th>Personel</th>
+                    <th>Hizmetler</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var randevu = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@randevu.MusteriAd</td>
+                        <td>@randevu.MusteriSoyAd</td>
+                        <td>@randevu.MusteriTelefonNo</td>
+                        <td>@randevu.MusteriMail</td>
+                        <td>@randevu.RendevuZaman.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@randevu.Personel?.PersonelAd @randevu.Personel?.PersonelSoyAd</td>
+                        <td>
+                            @if (randevu.Hizmetler != null && randevu.Hizmetler.Any())
+                            {
+                                <ul>
+                                    @foreach (var hizmetID in randevu.Hizmetler)
+                                    {
+                                        // ViewBag'deki HizmetListesi'ni listeye dönüştür
+                                        var hizmetListesi = ViewBag.HizmetListesi as List<Web_Programlama__Proje.Models.Hizmetler>;
+                                        var hizmet = hizmetListesi?.FirstOrDefault(h => h.HizmetID == hizmetID);
+                                        if (hizmet != null)
+                                        {
+                                            <li>@hizmet.HizmetAd</li>
+                                        }
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+
+                        <td>@(randevu.RendevuOnayDurumu ? "Onaylandı" : "Bekliyor")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

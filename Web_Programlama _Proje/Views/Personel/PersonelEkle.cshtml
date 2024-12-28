@@ -1,4 +1,4 @@
-﻿@model Web_Programlama__Proje.Models.Personel
+﻿@* @model Web_Programlama__Proje.Models.Personel
 
 <h3>Personel Ekle</h3>
 
@@ -33,3 +33,116 @@
 
     <button type="submit" class="btn btn-primary">Kaydet</button>
 </form>
+ *@
+@*  @model Web_Programlama__Proje.Models.Personel
+
+<div class="container">
+    <h2>Yeni Personel Ekle</h2>
+    <form asp-action="PersonelEkle" method="post">
+        <div class="form-group">
+            <label>Ad</label>
+            <input asp-for="PersonelAd" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Soyad</label>
+            <input asp-for="PersonelSoyAd" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Yetenekler</label>
+            <input asp-for="PersonelYetenekleri" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Hizmetler</label>
+            <select asp-for="PersonelHizmetler" asp-items="ViewBag.HizmetListesi" multiple="multiple" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label>Çalışma Saatleri</label>
+            <div id="calismaSaatleriListesi">
+                <div class="d-flex mb-2">
+                    <input type="time" name="calismaSaatleri[0]" class="form-control me-2" />
+                    <button type="button" class="btn btn-success" onclick="addCalismaSaati()">+</button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+    </form>
+</div>
+
+<script>
+    let calismaSaatIndex = 1;
+
+    function addCalismaSaati() {
+        const calismaSaatleriDiv = document.getElementById("calismaSaatleriListesi");
+        const yeniSatir = document.createElement("div");
+        yeniSatir.className = "d-flex mb-2";
+        yeniSatir.innerHTML = `
+            <input type="time" name="calismaSaatleri[${calismaSaatIndex}]" class="form-control me-2" />
+            <button type="button" class="btn btn-danger" onclick="removeCalismaSaati(this)">-</button>
+        `;
+        calismaSaatleriDiv.appendChild(yeniSatir);
+        calismaSaatIndex++;
+    }
+
+    function removeCalismaSaati(button) {
+        button.parentElement.remove();
+    }
+</script>
+ *@
+ @model Web_Programlama__Proje.Models.Personel
+
+<div class="container">
+    <h2>Yeni Personel Ekle</h2>
+    <form asp-action="PersonelEkle" method="post">
+        <div class="form-group">
+            <label>Ad</label>
+            <input asp-for="PersonelAd" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Soyad</label>
+            <input asp-for="PersonelSoyAd" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Yetenekler</label>
+            <input asp-for="PersonelYetenekleri" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Hizmetler</label>
+            <select name="hizmetler" multiple="multiple" class="form-control">
+                @foreach (var hizmet in ViewBag.HizmetListesi)
+                {
+                    <option value="@hizmet.Value">@hizmet.Text</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Çalışma Saatleri</label>
+            <div id="calismaSaatleriListesi">
+                <div class="d-flex mb-2">
+                    <input type="time" name="calismaSaatleri[0]" class="form-control me-2" />
+                    <button type="button" class="btn btn-success" onclick="addCalismaSaati()">+</button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+    </form>
+</div>
+
+<script>
+    let calismaSaatIndex = 1;
+
+    function addCalismaSaati() {
+        const calismaSaatleriDiv = document.getElementById("calismaSaatleriListesi");
+        const yeniSatir = document.createElement("div");
+        yeniSatir.className = "d-flex mb-2";
+        yeniSatir.innerHTML = `
+            <input type="time" name="calismaSaatleri[${calismaSaatIndex}]" class="form-control me-2" />
+            <button type="button" class="btn btn-danger" onclick="removeCalismaSaati(this)">-</button>
+        `;
+        calismaSaatleriDiv.appendChild(yeniSatir);
+        calismaSaatIndex++;
+    }
+
+    function removeCalismaSaati(button) {
+        button.parentElement.remove();
+    }
+</script>

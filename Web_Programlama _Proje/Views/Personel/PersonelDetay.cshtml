@@ -1,0 +1,68 @@
+﻿@model Web_Programlama__Proje.Models.Personel
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>@Model.PersonelAd @Model.PersonelSoyAd</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Sol Sütun: Personel Bilgileri -->
+                <div class="col-md-6">
+                    <h5 class="text-secondary">Personel Bilgileri</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Yetenekler:</strong> @Model.PersonelYetenekleri
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Email:</strong> info@personel.com <!-- Varsayılan veya dinamik bir email -->
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sağ Sütun: Çalışma Saatleri -->
+                <div class="col-md-6">
+                    <h5 class="text-secondary">Çalışma Saatleri</h5>
+                    @if (Model.PersonelCalismaSaati != null && Model.PersonelCalismaSaati.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var saat in Model.PersonelCalismaSaati)
+                            {
+                                <li class="list-group-item">@saat.CalismaSaati</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Çalışma saatleri bilgisi bulunamadı.</p>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Hizmetler -->
+            <h5 class="text-secondary">Hizmetler</h5>
+            @if (Model.PersonelHizmetler != null && Model.PersonelHizmetler.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var hizmet in Model.PersonelHizmetler)
+                    {
+                        <li class="list-group-item">
+                            <strong>@hizmet.Hizmetler.HizmetAd</strong> -
+                            <span class="text-muted">@hizmet.Hizmetler.HizmetUcreti ₺</span>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Hizmet bilgisi bulunamadı.</p>
+            }
+        </div>
+
+        <div class="card-footer text-center">
+            <a asp-action="Personller" class="btn btn-danger">Geri Dön</a>
+        </div>
+    </div>
+</div>
