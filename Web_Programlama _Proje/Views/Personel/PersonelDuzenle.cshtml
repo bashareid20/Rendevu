@@ -1,10 +1,10 @@
 ﻿@model Web_Programlama__Proje.Models.Personel
-<div class="alert-danger">@TempData["msj"]</div>
-
 
 <div class="container">
-    <h2>Yeni Personel Ekle</h2>
-    <form asp-action="PersonelEkle" method="post">
+    <h2>Personel Düzenle</h2>
+    <form asp-action="PersonelDuzenle" method="post">
+        <input type="hidden" asp-for="PersonelID" />
+
         <!-- Personel Bilgileri -->
         <div class="form-group">
             <label>Ad</label>
@@ -20,36 +20,43 @@
         </div>
 
         <!-- Hizmetler -->
-        <div class="form-group">
-            <label>Hizmetler</label>
-            <select name="hizmetler" multiple="multiple" class="form-control">
-                @foreach (var hizmet in ViewBag.HizmetListesi)
-                {
-                    <option value="@hizmet.Value">@hizmet.Text</option>
-                }
-            </select>
-        </div>
+        <select name="hizmetler" multiple="multiple" class="form-control">
+            @foreach (var hizmet in ViewBag.HizmetListesi)
+            {
+                <option value="@hizmet.Value" selected="@Model.PersonelHizmetler.Any(ph => ph.HizmetID == Convert.ToInt32(hizmet.Value))">
+                    @hizmet.Text
+                </option>
+            }
+        </select>
 
         <!-- Tarihler -->
         <div class="form-group">
             <label>Tarihler</label>
             <div id="tarihListesi">
-                <div class="d-flex mb-2">
-                    <input type="date" name="tarihler[0]" class="form-control me-2" />
-                    <button type="button" class="btn btn-success" onclick="addTarih()">+</button>
-                </div>
+                @for (int i = 0; i < Model.PersonelCalismaSaati.Select(cs => cs.Tarih).Distinct().Count(); i++)
+                {
+                    <div class="d-flex mb-2">
+                        <input type="date" name="tarihler[@i]" value="@Model.PersonelCalismaSaati.Select(cs => cs.Tarih).Distinct().ElementAt(i).ToString("yyyy-MM-dd")" class="form-control me-2" />
+                        <button type="button" class="btn btn-danger" onclick="removeTarih(this)">-</button>
+                    </div>
+                }
             </div>
+            <button type="button" class="btn btn-success mt-2" onclick="addTarih()">+ Tarih Ekle</button>
         </div>
 
         <!-- Çalışma Saatleri -->
         <div class="form-group">
             <label>Çalışma Saatleri</label>
             <div id="calismaSaatleriListesi">
-                <div class="d-flex mb-2">
-                    <input type="time" name="calismaSaatleri[0]" class="form-control me-2" />
-                    <button type="button" class="btn btn-success" onclick="addCalismaSaati()">+</button>
-                </div>
+                @for (int i = 0; i < Model.PersonelCalismaSaati.Count; i++)
+                {
+                    <div class="d-flex mb-2">
+                        <input type="time" name="calismaSaatleri[@i]" value="@Model.PersonelCalismaSaati.ElementAt(i).CalismaSaati.ToString(@"hh\:mm")" class="form-control me-2" />
+                        <button type="button" class="btn btn-danger" onclick="removeCalismaSaati(this)">-</button>
+                    </div>
+                }
             </div>
+            <button type="button" class="btn btn-success mt-2" onclick="addCalismaSaati()">+ Saat Ekle</button>
         </div>
 
         <!-- Kaydet Butonu -->
@@ -58,10 +65,9 @@
 </div>
 
 <script>
-    let tarihIndex = 1;
-    let calismaSaatIndex = 1;
+    let tarihIndex = @Model.PersonelCalismaSaati.Select(cs => cs.Tarih).Distinct().Count();
+    let calismaSaatIndex = @Model.PersonelCalismaSaati.Count;
 
-    // Yeni Tarih Ekle
     function addTarih() {
         const tarihListesiDiv = document.getElementById("tarihListesi");
         const yeniSatir = document.createElement("div");
@@ -74,12 +80,10 @@
         tarihIndex++;
     }
 
-    // Tarih Sil
     function removeTarih(button) {
         button.parentElement.remove();
     }
 
-    // Yeni Çalışma Saati Ekle
     function addCalismaSaati() {
         const calismaSaatleriDiv = document.getElementById("calismaSaatleriListesi");
         const yeniSatir = document.createElement("div");
@@ -92,7 +96,6 @@
         calismaSaatIndex++;
     }
 
-    // Çalışma Saati Sil
     function removeCalismaSaati(button) {
         button.parentElement.remove();
     }
