@@ -1,8 +1,75 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Ana Sayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="alert-danger">@TempData["msj_kaytli"]</div>
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<!-- Ana Sayfa Başlığı -->
+<div class="container-fluid bg-primary text-white text-center py-5 mb-5">
+    <h1 class="display-4">Hoş Geldiniz</h1>
+    <p class="lead">Kuaförünüzde en iyi hizmeti sunuyoruz</p>
+</div>
+
+<!-- Hakkımızda Bölümü -->
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <img src="~/img/about.jpg" class="img-fluid rounded" alt="Hakkımızda">
+        </div>
+        <div class="col-md-6">
+            <h2>Hakkımızda</h2>
+            <p>25 yılı aşkın süredir saç ve sakal tasarımı, modern teknikler ve kişiselleştirilmiş hizmetlerle müşterilerimize en iyi deneyimi sunuyoruz.</p>
+            <a asp-controller="Home" asp-action="Hakkimizda" class="btn btn-primary">Daha Fazla Bilgi</a>
+        </div>
+    </div>
+</div>
+
+<!-- Hizmetlerimiz Bölümü -->
+<div class="container py-5">
+    <h2 class="text-center mb-4">Hizmetlerimiz</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="p-4 border rounded">
+                <img src="~/img/haircut.png" alt="Saç Kesimi" class="img-fluid mb-3" style="width: 80px;">
+                <h5>Saç Kesimi</h5>
+                <p>Modern ve profesyonel saç kesimi.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded">
+                <img src="~/img/beard-trim.png" alt="Sakal Düzeltme" class="img-fluid mb-3" style="width: 80px;">
+                <h5>Sakal Düzeltme</h5>
+                <p>Şık ve kusursuz sakal şekillendirme.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 border rounded">
+                <img src="~/img/hair-dyeing.png" alt="Saç Boyama" class="img-fluid mb-3" style="width: 80px;">
+                <h5>Saç Boyama</h5>
+                <p>Kaliteli ve doğal saç boyama hizmeti.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Ekibimiz Bölümü -->
+<div class="container py-5">
+    <h2 class="text-center mb-4">Ekibimiz</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <img src="~/img/team-1.jpg" class="img-fluid rounded-circle mb-3" alt="Ahmet Yılmaz" style="width: 150px;">
+            <h5>Ahmet Yılmaz</h5>
+            <p>Saç Kesimi Uzmanı</p>
+        </div>
+        <div class="col-md-4">
+            <img src="~/img/team-2.jpg" class="img-fluid rounded-circle mb-3" alt="Mehmet Kaya" style="width: 150px;">
+            <h5>Mehmet Kaya</h5>
+            <p>Sakal Tasarımı Uzmanı</p>
+        </div>
+        <div class="col-md-4">
+            <img src="~/img/team-3.jpg" class="img-fluid rounded-circle mb-3" alt="Tarık Berazzi" style="width: 150px;">
+            <h5>Tarık Berazzi</h5>
+            <p>Renk Uzmanı</p>
+        </div>
+    </div>
 </div>

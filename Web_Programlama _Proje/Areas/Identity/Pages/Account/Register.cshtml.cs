@@ -75,26 +75,26 @@ namespace Web_Programlama__Proje.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [Display(Name = "Müşteri Adı")]
+            [Required(ErrorMessage = "Lütfen adınızı giriniz")]
+            [Display(Name = "Kullanıcı Adı")]
             public string UsrAd { get; set; }
 
-            [Required]
-            [Display(Name = "Müşteri Soy Adı")]
+            [Required(ErrorMessage = "Lütfen soy adınızı giriniz")]
+            [Display(Name = "Kullanıcı Soy Adı")]
             public string UsrSoyad { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Lütfen Email Hesapı giriniz")]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Email Hesapı")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Lütfen şifre giriniz")]
+            [StringLength(100, ErrorMessage = "{0}, en az {2} ve en fazla {1} karakter uzunluğunda olmalıdır.", MinimumLength = 3)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Şifre")]
             public string Password { get; set; }
 
             /// <summary>
@@ -102,8 +102,8 @@ namespace Web_Programlama__Proje.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "şifre tekrarı")]
+            [Compare("Password", ErrorMessage = "şifreler eşleşmıyor.")]
             public string ConfirmPassword { get; set; }
         }
 

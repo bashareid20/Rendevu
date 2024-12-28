@@ -47,14 +47,14 @@ namespace Web_Programlama__Proje.Controllers
 
             // 2) Saç tipleri listesi
             //  (Siz 5 veya daha fazla ekleyebilirsiniz)
-            var hairTypes = new List<string> { "201", "1001", "201", "801", "1301" };
+            var hairTypes = new List<string> { "201", "1001", "401", "801", "1301" };
 
             // API’den dönen 5 farklı sonucun base64 görselini saklayacağız
             var hairStyleResults = new Dictionary<string, string>();
 
             // RapidAPI bilgileri
             string apiUrl = "https://hairstyle-changer.p.rapidapi.com/huoshan/facebody/hairstyle";
-            string rapidApiKey = "1713462df4msh2e908d90d77b96cp100b74jsn13a284d29675";
+            string rapidApiKey = "";
             string rapidApiHost = "hairstyle-changer.p.rapidapi.com";
 
             try
