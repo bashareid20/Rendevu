@@ -54,7 +54,7 @@ namespace Web_Programlama__Proje.Controllers
 
             // RapidAPI bilgileri
             string apiUrl = "https://hairstyle-changer.p.rapidapi.com/huoshan/facebody/hairstyle";
-            string rapidApiKey = "c79a1435admshb12abfa3a619da1p17fd96jsnde29a13c774b";
+            string rapidApiKey = "";
             string rapidApiHost = "hairstyle-changer.p.rapidapi.com";
 
             try
